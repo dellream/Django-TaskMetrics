@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load comments_tags %}
+{% load static %}
+
+{% block title %}{{ comm.title }}{% endblock %}
+
+{% block content %}
+    <div class="detail">  {% comment %} Этот див нужен для list_right-columns.js {% endcomment %}
+
+        <div class="detail__title-wrapper">
+
+            <h1 class="detail__title">{{ comm.title }}</h1>
+            
+            <div class="detail__likes">
+                {% with total_likes=comm.users_like.count users_like=post.users_like.all %}
+                    
+                    <a href="#" data-url="{% url 'comments:like' %}" data-id="{{ post.id }}" data-action="{% if request.user in users_like %}
+                    un{% endif %}like" class="like button">
+                        {% if request.user not in users_like %}
+                            Есть в пуле
+                        {% else %}
+                            Нет в пуле
+                        {% endif %}
+                        
+                    </a>
+                    
+                    <span class="count">
+                        <span class="total">{{ total_likes }}</span>
+                        like{{ total_likes|pluralize }}
+                    </span>
+                {% endwith %}
+            </div>
+
+        </div>
+        
+        <div class="detail__date">
+
+            <p class="detail__date"> {{ comm.author }} / {{ comm.publish }}</p>
+            
+            <p class="detail__date-link">
+                <a href="{% url 'comments:post_share' comm.id %}">
+                    Отправить почтой
+                    <i class="fa-solid fa-envelope"></i>
+                </a>
+            </p>
+
+            
+            <!--        Добавим отображение тегов к посту   -->
+            <p class="tags">                                    
+                {% for tag in tags %}
+                    <a href="{% url 'comments:comment_list_by_tag' tag.slug %}">
+                        {{ tag.name }}
+                    </a>{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+                {{ post.tags.all }}
+            </p>
+    
+        </div>
+        
+        <div class="detail__body">
+            {{ comm.body|linebreaks }}
+        </div>
+    
+
+        <div class="detail__lowbody">
+
+            <div class="detail__lowbody__commentaries">
+                {% with commentaries.count as total_commentaries %}
+                    <h2 class="detail__subtitle ">
+                        Всего комментариев: {{ total_commentaries }}
+                    </h2>
+                {% endwith %}
+                
+                <div class="comments-container">
+
+                    {% for commentary in commentaries %}
+    
+                        <div class="detail__lowbody__commentary">
+                            <p class="detail__lowbody__commentary-author">
+                                {{ forloop.counter }}. {{ commentary.name }} / {{ commentary.created }}
+                            </p>
+                            <p class="detail__lowbody__commentary-body">
+                                {{ commentary.body }}
+                            </p> 
+                        </div>
+    
+                        {% empty %}
+                            <p>Пока комментариев нет</p>
+                    {% endfor %}
+
+                </div>
+
+                {% include "post/includes/commentary_form.html" %}
+
+            </div>
+
+            <div class="detail__lowbody__similar">
+        
+                <h2 class="detail__subtitle">Схожие посты</h2>
+                
+                {% for comm in similar_comm %}
+                    <ul>
+                        <li class="detail__lowbody__similar-link">
+                            <a href="{{ comm.get_absolute_url }}">{{ comm.title|truncatechars:30 }}</a></p>
+                        </li>      
+                    </ul>
+                
+                {% empty %}
+                    Пока нет схожих постов
+                {% endfor %}
+        
+            </div>
+        </div>
+
+    </div>
+    
+    {% endblock %}
+    
+    
+
+{% block sidebar %}
+    <h3>Последние опубликованные посты:</h3>
+    {% show_latest_posts 3 %}
+{% endblock %}
+
+

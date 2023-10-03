@@ -1,0 +1,167 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/taskmetrics.css' %}">
+    <link rel="stylesheet" href="{% static 'css/account.css' %}">
+    {% comment %} <link rel="stylesheet" href="{% static 'fonts/font-awesome.min.css'%}"> {% endcomment %}
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="wrapper__header-content">
+
+            <div class="topnav">
+                <div class="container">
+                    <div class="topnav__body">
+                        
+                        <a href="/" class="topnav__logo">
+                            <img src="{% static 'img/header_logo.svg' %}" alt="TaskHelper">
+                        </a>
+        
+                        {% if request.user.is_authenticated %}
+        
+                            <form method="get" action="{% url 'comments:post_search' %}">
+                                <div class="topnav__search">
+                                    <input type="text" placeholder="Поиск статей.." name="query">
+                                    <button type="submit" class="fa-solid fa-magnifying-glass"> </button>
+                                </div>
+                            </form>
+        
+                            <div class="topnav__burger">
+                                <span></span>
+                            </div>
+        
+                            <nav class="topnav__menu">
+                                <ul class="topnav__list">
+                                    <li>
+                                        <a href="{% url 'dashboard' %}" class="topnav__link">Дашборд</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'comments:comment_list' %}" class="topnav__link">Статьи</a>
+                                    </li>
+                                    <li>
+                                        <a href="#faq" class="topnav__link">FAQ</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'logout' %}" class="topnav__link logout_logo fa-solid fa-person-through-window"></a>                         
+                                    </li>
+                                </ul>
+                            </nav>
+                        
+                        {% else %}
+                            <div class="topnav__login_reg">
+                                <ul class="topnav__welcome_list">
+                                    <li>
+                                        <a href="{% url 'login' %}" class="topnav__link login">Войти</a>
+                                    </li>    
+                                    <li>
+                                        <a href="{% url 'register' %}" class="topnav__link register">Регистрация</a>
+                                    </li>
+                            </div>
+                        {% endif %}
+        
+                    </div>
+                </div>
+            </div>
+    
+                    
+            <div class="messages">
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li class="{{ message.tags }}">
+                                {{ message|safe }}
+                                <a href="#" class="close">x</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div class="content">
+            <!-- Здесь располагается основное содержимое страницы -->
+            {% block content %}
+            {% endblock %}
+            </div>
+    
+            
+        </div>
+            
+        
+        {% block footer %}
+            <div class="wrapper__footer">
+                <div class="footer">
+        
+                    <div class="footer__container">
+                        <div class="footer__content">
+                            <div class="footer__content__first-col">
+                                <img src="{% static 'img/header_logo.svg' %}" alt="TaskHelper">
+                            </div>
+                            <nav class="footer__content__second-col">
+                                <div class="footer__content__second-col-left">
+                                    <div class="footer__content__second-col-left-title">О приложении</div>
+                                    <ul>
+                                        <li class="footer__content-li">
+                                            <a href="#">Информация</a>
+                                        </li>
+                                        <li class="footer__content-li">
+                                            <a href="#">Справка</a>
+                                        </li>
+                                        <li class="footer__content-li">
+                                            <a href="#">Пожелания</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="footer__content__second-col-right">
+                                    <div class="footer__content__second-col-left-title">Полезные ссылки</div>
+                                    <ul>
+                                        <li class="footer__content-li">
+                                            <a href="#">Confluence</a>
+                                        </li>
+                                        <li class="footer__content-li">
+                                            <a href="#">JIRA</a>
+                                        </li>
+                                        <li class="footer__content-li">
+                                            <a href="#">АСТП</a>
+                                        </li>
+                                        <li class="footer__content-li">
+                                            <a href="#">Outlook</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+        
+        
+    </div>
+    
+    <script src="{% static 'js/head_script.js' %}"></script>
+    <script src="https://kit.fontawesome.com/1000bd427f.js" crossorigin="anonymous"></script>
+    <script src="{% static 'js/list_right-column.js' %}"></script>
+    <script src="{% static 'js/add_commentary.js' %}"></script>
+
+    <script src="//cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+    <script src="{% static 'js/likes.js' %}"></script>
+    
+</body>
+</html>
+
+
+<!--    <div class="sidebar">-->
+        <!--        <h2>Боковая панель</h2>-->
+        <!--        <p>-->
+        <!--            Это описание боковой панели-->
+        <!--        </p>-->
+        <!--        {% block sidebar %}-->
+        <!--        {% endblock %}-->
+        <!--    </div>-->

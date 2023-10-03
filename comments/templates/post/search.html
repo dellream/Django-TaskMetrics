@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load comments_tags %}
+
+{% block title %}Поиск{% endblock %}
+
+{% block content %}
+    {% if query %}
+        <h1>Искать посты, содержащие "{{ query }}"</h1>
+        <h3>
+            {% with results.count as total_results %}
+            Найдено результатов: {{ total_results }}
+            {% endwith %}
+        </h3>
+        {% for post in results %}
+        <div class="search__post">
+
+            <h4>
+                <a href="{{ post.get_absolute_url }}" class="search__title-post">
+                    {{ post.title }}
+                </a>
+            </h4>
+
+            <div class="search__text-body">
+                {{ post.body|truncatewords_html:12 }}
+            </div>
+            
+        </div>
+
+        {% empty %}
+            <p> Результаты не найдены </p>
+        {% endfor %}
+
+        <div class="search__repeat">
+            
+            <a href="{% url 'comments:post_search' %}"><button class="search__repeat-button">Искать снова</button></a>
+
+        </div>
+    
+    {% else %}
+    <h1>Поиск постов</h1>
+
+    <div class="search-container">
+        <form method="get" action="{% url 'comments:post_search' %}">
+            <input type="text" placeholder="Поиск статей.." name="query">
+            <button type="submit">Поиск</button>
+        </form>
+    </div>
+
+    {% endif %}
+{% endblock %}
