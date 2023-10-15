@@ -24,5 +24,5 @@ urlpatterns = [
     path('', include('core.urls', namespace='core')),
 
     # account
-    path('account/', include('account.urls', namespace='account'))
+    path('account/', include('account.urls'))
 ]
