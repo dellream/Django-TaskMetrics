@@ -1,4 +1,6 @@
 from django.shortcuts import render
+
+from .services.services import service_user_register
 from .forms import UserRegistrationForm
 
 
@@ -9,7 +11,7 @@ def user_register(request):
     if request.method == 'POST':
         user_form = UserRegistrationForm(request.POST)
         if user_form.is_valid():
-            service_user_register(user_form)
+            new_user = service_user_register(user_form)
             return render(
                 request,
                 'registration/register_done.html',
