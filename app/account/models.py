@@ -1,10 +1,10 @@
 from django.core.validators import FileExtensionValidator
+from django.contrib.auth import get_user_model
 from django.db import models
-from django.conf import settings
 from django.urls import reverse
-from django import forms
+from django.utils.text import slugify
 
-from services.utils import unique_slugify
+User = get_user_model()
 
 
 class Profile(models.Model):
@@ -12,11 +12,11 @@ class Profile(models.Model):
     Модель профиля пользователей
     """
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
+        User,
         on_delete=models.CASCADE
     )
     slug = models.SlugField(
-        verbose_name='URL',
+        verbose_name='Слаг профиля',
         max_length=255,
         blank=True,
         unique=True
@@ -54,7 +54,7 @@ class Profile(models.Model):
         для входа в профиль
         """
         if not self.slug:
-            self.slug = unique_slugify(self, self.user.username)
+            self.slug = slugify(self.user.username)
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
