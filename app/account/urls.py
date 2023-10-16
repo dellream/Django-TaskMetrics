@@ -9,5 +9,5 @@ urlpatterns = [
     # Регистрация пользователя
     path('register/', views.user_register, name='user_register'),
     # Редактирование пользователя
-    path('edit/', views.user_edit, name='user_edit'),
+    path('edit/', views.edit_user_and_profile, name='edit_user_and_profile'),
 ]
