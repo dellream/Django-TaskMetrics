@@ -5,7 +5,7 @@ from ..models import Profile
 from ..forms import (
     UserRegistrationForm,
     UserEditForm,
-    ProfileEditForm
+    ProfileEditForm,
 )
 from django.contrib import messages
 

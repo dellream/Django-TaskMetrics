@@ -1,12 +1,18 @@
 from django import forms
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
-
 from .models import Profile
 
 
-# class LoginForm(forms.Form):
-#     username = forms.CharField()
-#     password = forms.CharField(widget=forms.PasswordInput)
+class LoginForm(AuthenticationForm):
+    username = forms.CharField(
+        label='Имя пользователя'
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput,
+        label='Пароль'
+    )
+
 
 class UserRegistrationForm(forms.ModelForm):
     username = forms.CharField(
@@ -50,6 +56,7 @@ class UserEditForm(forms.ModelForm):
     """
     Форма изменения пользователя.
     """
+
     def clean_email(self):
         """
         Проверяет есть ли предоставляемый email в БД. Если есть, то райзит ошибку,
