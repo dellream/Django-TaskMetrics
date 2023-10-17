@@ -39,6 +39,12 @@ class UserRegistrationForm(forms.ModelForm):
             raise forms.ValidationError('Эта электронная почта уже используется.')
         return data
 
+    def clean_username(self):
+        data = self.cleaned_data['username']
+        if User.objects.filter(username=data).exists():
+            raise forms.ValidationError('Этот псевдоним уже используется.')
+        return data
+
 
 class UserEditForm(forms.ModelForm):
     """
