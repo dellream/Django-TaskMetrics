@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/core.css' %}">
+    <link rel="stylesheet" href="{% static 'css/account.css' %}">
+
     {% comment %} <link rel="stylesheet" href="{% static 'fonts/font-awesome.min.css'%}"> {% endcomment %}
 
     <title>{% block title %}{% endblock %}</title>
@@ -23,6 +25,8 @@
                         <a href="/" class="topnav__logo">
                             <img src="{% static 'img/header_logo.svg' %}" alt="TaskHelper">
                         </a>
+
+                        {% if request.user.is_authenticated %}
 
 
                             <div class="topnav__burger">
@@ -41,10 +45,23 @@
                                         <a href="#faq" class="topnav__link">FAQ</a>
                                     </li>
                                     <li>
-                                        <a href="#Выход" class="topnav__link logout_logo fa-solid fa-person-through-window"></a>
+                                        <a href="{% url 'logout' %}" class="topnav__link logout_logo fa-solid fa-person-through-window"></a>
                                     </li>
                                 </ul>
                             </nav>
+
+                        {% else %}
+                            <div class="topnav__login_reg">
+                                <ul class="topnav__welcome_list">
+                                    <li>
+                                        <a href="{% url 'login' %}" class="topnav__link login">Войти</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'register' %}" class="topnav__link register">Регистрация</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        {% endif %}
 
 
 
