@@ -32,6 +32,44 @@ h1, h2, h3 {
     margin-bottom: 20px;
 }
 
+/* ---------- Формы ---------- ----------  ---------- */
+
+form {overflow:auto;}
+form p {
+    width:100%;
+    overflow:auto;
+}
+
+label {
+    float:left;
+    clear:both;
+    color:#333;
+    margin: 4px 0;
+}
+input, textarea {
+    clear:both;
+    float:left;
+    margin:10px 5px;
+    background:#efefef;
+    border:0;
+    padding:6px 10px;
+    font-size:17px;
+    border-radius: 15px;
+}
+input[type=submit], a.button {
+    font-weight:bold;
+    background:#d0bca8;
+    color: black;
+    padding: 8px 20px;
+    font-size: 14px;
+    text-transform:uppercase;
+    cursor: pointer;
+    border-radius: 15px;
+}
+#comment-form {
+    margin-top: 15px;
+}
+
 /* -----HEADER-------------------------------------------------------*/
 
 .container {
