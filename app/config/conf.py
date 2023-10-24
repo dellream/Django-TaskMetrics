@@ -14,5 +14,8 @@ DB_NAME = os.environ.get('DB_NAME')
 DB_USER = os.environ.get('DB_USER')
 DB_PASSWORD = os.environ.get('DB_PASSWORD')
 
+# Пути
+HOME_URL = 'http://localhost:8000/'
+
 if __name__ == '__main__':
     print(DB_HOST)
