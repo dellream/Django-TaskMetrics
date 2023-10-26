@@ -15,7 +15,10 @@ DB_USER = os.environ.get('DB_USER')
 DB_PASSWORD = os.environ.get('DB_PASSWORD')
 
 # Пути
-HOME_URL = 'http://localhost:8000/'
+LOCALHOST_URL = 'http://localhost:8000/'
+HOME_URL = LOCALHOST_URL
+LOGIN_URL = LOCALHOST_URL + 'account/login/'
+REGISTER_URL = LOCALHOST_URL + 'account/register/'
 
 if __name__ == '__main__':
     print(DB_HOST)
