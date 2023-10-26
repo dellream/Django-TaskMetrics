@@ -72,38 +72,34 @@ class TestBasicUserAuth:
 
             print('\ntest_register: Регистрация завершена')
 
-    # @pytest.mark.django_db
-    # def test_login(self, client, test_user):
-    #     """
-    #     Проверка авторизации зарегистрированного
-    #     пользователя через форму авторизации
-    #     """
-    #     client.login(username='testuser', password='testpassword')
-    #     response = client.get(reverse('core:home'))
-    #     assert response.status_code == 200
-    #     # Проверки для авторизованного пользователя
-    #
-    # @pytest.mark.django_db
-    # def test_logout(
-    #         self,
-    #         client: Client,
-    #         browser
-    # ) -> None:
-    #     """Выход из системы авторизованного пользователя"""
-    #     if client.is_authenticated:
-    #         browser.get(reverse('core:home'))
-    #         print('test_logout: Получена домашняя страница')
-    #
-    #         home_logout_button = browser.find_element(By.CLASS_NAME, 'logout_logo')
-    #         home_logout_button.click()
-    #         print('test_logout: Выполнен клик на изображение выхода из системы')
-    #
-    #         response = client.get(reverse('logged_out'))
-    #         assert response.status_code == 200
-    #
-    # @pytest.mark.django_db
-    # def test_delete_user(self, test_user):
-    #     user_to_delete = User.objects.get(username='testuser')
-    #     user_to_delete.delete()
-    #     assert User.objects.filter(username='testuser').count() == 0
-    #     # Проверки для удаления пользователя
+    @pytest.mark.django_db
+    def test_login(self, driver) -> None:
+        """
+        Проверка авторизации зарегистрированного
+        пользователя через форму авторизации
+        """
+        driver.get(HOME_URL)
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, 'html')))
+        assert driver.current_url == HOME_URL
+        print('\ntest_login: Получена домашняя страница')
+
+        header_login_button = driver.find_element(By.CLASS_NAME, 'login')
+        header_login_button.click()
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, 'html')))
+        assert driver.current_url == LOGIN_URL
+        print('test_login: Переход на страницу авторизации успешно выполнен')
+
+        # Находим поля для ввода
+        username_input = driver.find_element(By.ID, 'id_username')
+        password_input = driver.find_element(By.ID, 'id_password')
+
+        # Вводим данные с прошлого теста
+        username_input.send_keys('test_register_username')
+        password_input.send_keys('test_register_password')
+
+        login_button = driver.find_element(By.XPATH, '//input[@value="Войти"]')
+        login_button.click()
+
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, 'html')))
+        assert driver.current_url == HOME_URL
+        print('test_login: Редирект после авторизации произошел')
