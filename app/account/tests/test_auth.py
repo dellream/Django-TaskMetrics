@@ -103,3 +103,22 @@ class TestBasicUserAuth:
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, 'html')))
         assert driver.current_url == HOME_URL
         print('test_login: Редирект после авторизации произошел')
+
+    @pytest.mark.django_db
+    def test_logout(
+            self,
+            client: Client,
+            driver
+    ) -> None:
+        """Выход из системы авторизованного пользователя"""
+        self.test_login(driver)
+        driver.get(HOME_URL)
+        print('test_logout: Получена домашняя страница')
+
+        home_logout_button = driver.find_element(By.CLASS_NAME, 'logout_logo')
+        home_logout_button.click()
+        print('test_logout: Выполнен клик на изображение выхода из системы')
+
+        # Проверяем, что пользователь больше не авторизован
+        assert '_auth_user_id' not in client.session
+        print('test_logout: Пользователь успешно вышел из системы')
