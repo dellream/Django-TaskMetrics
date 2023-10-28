@@ -1,12 +1,10 @@
 from django.shortcuts import render
 
 from django.contrib.auth.decorators import login_required
+from django.views.generic import DetailView, UpdateView
 
-from .services.services import (
-    service_user_register,
-    service_edit_user_and_profile,
-    service_create_user_registration_from,
-)
+from .models import Profile
+from .services.services import service_create_user_registration_form
 
 
 def user_register(request):
@@ -14,7 +12,7 @@ def user_register(request):
     Регистрация пользователей
     """
     # Вызываем функцию для создания формы
-    user_form, new_user = service_create_user_registration_from(request)
+    user_form, new_user = service_create_user_registration_form(request)
 
     # Если создаем нового пользователя:
     if new_user:
@@ -32,18 +30,24 @@ def user_register(request):
     )
 
 
-@login_required
-def edit_user_and_profile(request):
+class ProfileDetailView(DetailView):
     """
-    Редактирование пользователя и его профиля
+    Представление для просмотра профиля
     """
-    user_form, profile_form = service_edit_user_and_profile(request)
+    model = Profile
+    context_object_name = 'profile'
+    template_name = 'profile/profile_detail.html'
 
-    return render(
-        request,
-        'account/edit.html',
-        {
-            'user_form': user_form,
-            'profile_form': profile_form
-        }
-    )
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = f'Страница пользователя: {self.object.user.username}'
+        return context
+
+# @login_required
+# class ProfileEditView(UpdateView):
+#     """
+#     Представление для редактирования профиля
+#     """
+#     model = Profile
+#     form_class = ProfileEditForm
+#     template_name = 'account/profile/profile_edit.html'

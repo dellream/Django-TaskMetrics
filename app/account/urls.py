@@ -42,6 +42,10 @@ urlpatterns = [
     # Работа с пользователями
     # Регистрация пользователя
     path('register/', views.user_register, name='register'),
-    # Редактирование пользователя
-    path('edit/', views.edit_user_and_profile, name='edit_user_and_profile'),
+    # Просмотр профиля
+    path('profile/<str:slug>/',
+         views.ProfileDetailView.as_view(),
+         name='profile_detail'),
+    # Редактирование профиля
+    # path('profile/<str:slug>/edit', views.ProfileEditView.as_view(), name='profile_edit'),
 ]
