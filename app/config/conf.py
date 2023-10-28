@@ -19,6 +19,7 @@ LOCALHOST_URL = 'http://localhost:8000/'
 HOME_URL = LOCALHOST_URL
 LOGIN_URL = LOCALHOST_URL + 'account/login/'
 REGISTER_URL = LOCALHOST_URL + 'account/register/'
+FORGOT_PASS_URL = LOCALHOST_URL + 'account/password-reset/'
 
 if __name__ == '__main__':
     print(DB_HOST)
