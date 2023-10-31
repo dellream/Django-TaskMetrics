@@ -1,19 +1,24 @@
 """
 Сервисный слой для вынесения бизнес-логики из представлений (views)
 """
+from django.db import transaction
+from django.urls import reverse_lazy
+
 from ..models import Profile
 from ..forms import (
     UserRegistrationForm,
-    UserEditForm,
-    ProfileEditForm,
+    UserUpdateForm,
+    ProfileUpdateForm,
 )
 from django.contrib import messages
 
 
 def service_user_register(user_form):
     """
-    Регистрация пользователя и создание для него профиля
-    Возвращает new_user, если форма валидна, иначе None
+    Регистрация пользователя и создание для него профиля.
+
+    :param user_form: Форма регистрации пользователя.
+    :return: Объект пользователя (new_user), если форма валидна, иначе None.
     """
     if user_form.is_valid():
         new_user = user_form.save(commit=False)
@@ -24,12 +29,14 @@ def service_user_register(user_form):
     return None
 
 
-def service_create_user_registration_from(request):
+def service_create_user_registration_form(request):
     """
-    Создание формы регистрации
-    Возвращает форму регистрации пользователя и new_user,
-    если пользователь новый, если существующий, то
-    возвращает форму и None
+    Создание формы регистрации пользователя.
+
+    :param request: Запрос от пользователя.
+    :return: Кортеж с двумя элементами:
+        - user_form: форма регистрации пользователя
+        - new_user: объект нового пользователя, если регистрация прошла успешно, иначе None
     """
     if not request.method == 'POST':
         user_form = UserRegistrationForm()
@@ -42,30 +49,47 @@ def service_create_user_registration_from(request):
     return user_form, None
 
 
-def service_edit_user_and_profile(request):
+class ServiceProfileUpdate:
     """
-    Редактирование пользователя и его профиля
+    Сервисный класс для вынесения логики редактирования профиля из слоя views.
     """
-    if not request.method == 'POST':
-        user_form = UserEditForm(instance=request.user)
-        profile_form = ProfileEditForm(instance=request.user.profile)
-    else:
-        user_form = UserEditForm(
-            instance=request.user,
-            data=request.POST
-        )
-        profile_form = ProfileEditForm(
-            instance=request.user.profile,
-            data=request.POST,
-            files=request.FILES
-        )
+    @staticmethod
+    def get_user_edit_form(request):
+        """
+        Получение формы редактирования данных пользователя.
 
-        if user_form.is_valid() and profile_form.is_valid():
-            user_form.save()
-            profile_form.save()
-
-            messages.success(request, 'Профиль успешно изменен')
+        :param request: Запрос от пользователя.
+        :return: Форма редактирования данных пользователя.
+        """
+        if request.POST:
+            return UserUpdateForm(request.POST, instance=request.user)
         else:
-            messages.error(request, 'Ошибка изменения профиля')
+            return UserUpdateForm(instance=request.user)
 
-    return user_form, profile_form
+    @staticmethod
+    def save_profile_data(request, form):
+        """
+        Сохранение данных профиля пользователя.
+
+        :param request: Запрос от пользователя.
+        :param form: Форма редактирования профиля.
+        :return: True, если обе формы валидны и данные успешно сохранены, иначе False.
+        """
+        user_form = ServiceProfileUpdate.get_user_edit_form(request)
+        if all([form.is_valid(), user_form.is_valid()]):
+            # Следуем принципу атомарности для обязательного сохранения всех данных
+            with transaction.atomic():
+                user_form.save()
+                form.save()
+            return True
+        return False
+
+    @staticmethod
+    def get_success_url(profile):
+        """
+        Получение URL для перенаправления после успешного редактирования профиля.
+
+        :param profile: Профиль пользователя.
+        :return: URL для перенаправления.
+        """
+        return reverse_lazy('profile_detail', kwargs={'slug': profile.slug})

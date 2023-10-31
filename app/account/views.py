@@ -47,33 +47,6 @@ class ProfileDetailView(DetailView):
         return context
 
 
-# class ProfileEditView(UpdateView):
-#     """
-#     Представление для редактирования профиля
-#     """
-#     model = Profile
-#     form_class = ProfileEditForm
-#     template_name = 'profile/profile_edit.html'
-#
-#     def get_object(self, queryset=None):
-#         return self.request.user.profile
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['title'] = f'Редактирование профиля пользователя: {self.request.user.username}'
-#         context['user_form'] = ServiceProfileEdit.get_user_edit_form(self.request)
-#         return context
-#
-#     def form_valid(self, form):
-#         if ServiceProfileEdit.save_profile_data(self.request, form):
-#             return super(ProfileEditView, self).form_valid(form)
-#         else:
-#             context = self.get_context_data()
-#             return self.render_to_response(context)
-#
-#     def get_success_url(self):
-#         return ServiceProfileEdit.get_success_url(self.object)
-
 class ProfileUpdateView(UpdateView):
     """
     Представление для редактирования профиля
@@ -88,26 +61,53 @@ class ProfileUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = f'Редактирование профиля пользователя: {self.request.user.username}'
-        if self.request.POST:
-            context['user_form'] = UserUpdateForm(self.request.POST, instance=self.request.user)
-        else:
-            context['user_form'] = UserUpdateForm(instance=self.request.user)
+        context['user_form'] = ServiceProfileUpdate.get_user_edit_form(self.request)
         return context
 
     def form_valid(self, form):
-        context = self.get_context_data()
-        user_form = context['user_form']
-        with transaction.atomic():
-            if all([form.is_valid(), user_form.is_valid()]):
-                user_form.save()
-                form.save()
-            else:
-                context.update({'user_form': user_form})
-                return self.render_to_response(context)
-        return super(ProfileUpdateView, self).form_valid(form)
+        if ServiceProfileUpdate.save_profile_data(self.request, form):
+            return super(ProfileUpdateView, self).form_valid(form)
+        else:
+            context = self.get_context_data()
+            return self.render_to_response(context)
 
     def get_success_url(self):
-        return reverse_lazy('profile_detail', kwargs={'slug': self.object.slug})
+        return ServiceProfileUpdate.get_success_url(self.object)
+
+# class ProfileUpdateView(UpdateView):
+#     """
+#     Представление для редактирования профиля
+#     """
+#     model = Profile
+#     form_class = ProfileUpdateForm
+#     template_name = 'profile/profile_edit.html'
+#
+#     def get_object(self, queryset=None):
+#         return self.request.user.profile
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['title'] = f'Редактирование профиля пользователя: {self.request.user.username}'
+#         if self.request.POST:
+#             context['user_form'] = UserUpdateForm(self.request.POST, instance=self.request.user)
+#         else:
+#             context['user_form'] = UserUpdateForm(instance=self.request.user)
+#         return context
+#
+#     def form_valid(self, form):
+#         context = self.get_context_data()
+#         user_form = context['user_form']
+#         with transaction.atomic():
+#             if all([form.is_valid(), user_form.is_valid()]):
+#                 user_form.save()
+#                 form.save()
+#             else:
+#                 context.update({'user_form': user_form})
+#                 return self.render_to_response(context)
+#         return super(ProfileUpdateView, self).form_valid(form)
+#
+#     def get_success_url(self):
+#         return reverse_lazy('profile_detail', kwargs={'slug': self.object.slug})
 
 
 
