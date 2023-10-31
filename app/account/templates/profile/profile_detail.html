@@ -11,7 +11,7 @@
                 <li>Дата рождения: {{ profile.birth_date }}</li>
                 <li>О себе: {{ profile.bio }}</li>
             </ul>
-            <a href="*url 'profile_edit'*" class="btn btn-sm btn-primary">Редактировать профиль</a>
+            <a href="{% url 'profile_edit' slug=profile.slug %}">Редактировать профиль</a>
         </div>
 </div>
 {% endblock %}

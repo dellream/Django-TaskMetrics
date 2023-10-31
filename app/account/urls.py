@@ -47,5 +47,5 @@ urlpatterns = [
          views.ProfileDetailView.as_view(),
          name='profile_detail'),
     # Редактирование профиля
-    # path('profile/<str:slug>/edit', views.ProfileEditView.as_view(), name='profile_edit'),
+    path('profile/<str:slug>/edit', views.ProfileUpdateView.as_view(), name='profile_edit'),
 ]

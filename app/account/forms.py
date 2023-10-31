@@ -52,7 +52,7 @@ class UserRegistrationForm(forms.ModelForm):
         return data
 
 
-class UserEditForm(forms.ModelForm):
+class UserUpdateForm(forms.ModelForm):
     """
     Форма изменения пользователя.
     """
@@ -82,7 +82,7 @@ class UserEditForm(forms.ModelForm):
         }
 
 
-class ProfileEditForm(forms.ModelForm):
+class ProfileUpdateForm(forms.ModelForm):
     """
     Форма изменения профиля
     """
