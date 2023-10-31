@@ -1,11 +1,7 @@
-from django.db import transaction
 from django.shortcuts import render
-
-from django.contrib.auth.decorators import login_required
-from django.urls import reverse_lazy
 from django.views.generic import DetailView, UpdateView
 
-from .forms import ProfileUpdateForm, UserUpdateForm
+from .forms import ProfileUpdateForm
 from .models import Profile
 from .services.services import service_create_user_registration_form, ServiceProfileUpdate
 
@@ -73,42 +69,6 @@ class ProfileUpdateView(UpdateView):
 
     def get_success_url(self):
         return ServiceProfileUpdate.get_success_url(self.object)
-
-# class ProfileUpdateView(UpdateView):
-#     """
-#     Представление для редактирования профиля
-#     """
-#     model = Profile
-#     form_class = ProfileUpdateForm
-#     template_name = 'profile/profile_edit.html'
-#
-#     def get_object(self, queryset=None):
-#         return self.request.user.profile
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['title'] = f'Редактирование профиля пользователя: {self.request.user.username}'
-#         if self.request.POST:
-#             context['user_form'] = UserUpdateForm(self.request.POST, instance=self.request.user)
-#         else:
-#             context['user_form'] = UserUpdateForm(instance=self.request.user)
-#         return context
-#
-#     def form_valid(self, form):
-#         context = self.get_context_data()
-#         user_form = context['user_form']
-#         with transaction.atomic():
-#             if all([form.is_valid(), user_form.is_valid()]):
-#                 user_form.save()
-#                 form.save()
-#             else:
-#                 context.update({'user_form': user_form})
-#                 return self.render_to_response(context)
-#         return super(ProfileUpdateView, self).form_valid(form)
-#
-#     def get_success_url(self):
-#         return reverse_lazy('profile_detail', kwargs={'slug': self.object.slug})
-
 
 
 if __name__ == '__main__':
