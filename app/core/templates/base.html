@@ -36,6 +36,9 @@
                             <nav class="topnav__menu">
                                 <ul class="topnav__list">
                                     <li>
+                                        <a href="{% url 'account:profile_detail' slug=request.user.profile.slug %}"  class="topnav__link">Профиль</a>
+                                    </li>>
+                                    <li>
                                         <a href="#Дашборд" class="topnav__link">Дашборд</a>
                                     </li>
                                     <li>
@@ -45,7 +48,7 @@
                                         <a href="#faq" class="topnav__link">FAQ</a>
                                     </li>
                                     <li>
-                                        <a href="{% url 'logged_out' %}" class="topnav__link logout_logo fa-solid fa-person-through-window"></a>
+                                        <a href="{% url 'account:logged_out' %}" class="topnav__link logout_logo fa-solid fa-person-through-window"></a>
                                     </li>
                                 </ul>
                             </nav>

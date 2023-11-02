@@ -3,6 +3,8 @@ from django.contrib.auth import views as auth_views
 from . import views
 from .forms import LoginForm
 
+app_name = 'account'
+
 urlpatterns = [
 
     # Вход и выход
