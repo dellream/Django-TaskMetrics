@@ -13,6 +13,7 @@
             </ul>
             {% if request.user == profile.user %}
                 <a href="{% url 'account:profile_edit' slug=profile.slug %}">Редактировать профиль</a>
+                <a href="{% url 'account:password_change' %}">Изменить пароль</a>
             {% endif %}
         </div>
 </div>
