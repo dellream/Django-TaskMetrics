@@ -16,6 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.contrib.auth import views as auth_views
+
+import account.forms
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,6 +28,15 @@ urlpatterns = [
 
     # account
     path('account/', include('account.urls')),
+
+    # Аутентификация и авторизация
+    # Кастомный вход
+    path('login/',
+         auth_views.LoginView.as_view(
+             template_name='registration/login.html',
+             authentication_form=account.forms.LoginForm
+         ),
+         name='login'),
     # Встроенные представления аутентификации
     path('', include('django.contrib.auth.urls')),
 ]
