@@ -17,9 +17,16 @@ DB_PASSWORD = os.environ.get('DB_PASSWORD')
 # Пути
 LOCALHOST_URL = 'http://localhost:8000/'
 HOME_URL = LOCALHOST_URL
-LOGIN_URL = LOCALHOST_URL + 'account/login/'
+LOGIN_URL = LOCALHOST_URL + 'login/'
 REGISTER_URL = LOCALHOST_URL + 'account/register/'
-FORGOT_PASS_URL = LOCALHOST_URL + 'account/password-reset/'
+FORGOT_PASS_URL = LOCALHOST_URL + 'password-reset/'
+
+# Переменные для конфигурации сервера электронной почты
+EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND')
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = os.environ.get('EMAIL_PORT')
 
 if __name__ == '__main__':
     print(DB_HOST)

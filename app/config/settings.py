@@ -17,7 +17,12 @@ from .conf import (
     DB_NAME,
     DB_USER,
     DB_PASSWORD,
-    SECRET_KEY_ENV
+    SECRET_KEY_ENV,
+    EMAIL_BACKEND,
+    EMAIL_HOST,
+    EMAIL_HOST_USER,
+    EMAIL_HOST_PASSWORD,
+    EMAIL_PORT
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -135,6 +140,18 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Конфигурация сервера электронной почты
+EMAIL_BACKEND_ = EMAIL_BACKEND
+EMAIL_HOST_ = EMAIL_HOST
+EMAIL_HOST_USER_ = EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD_ = EMAIL_HOST_PASSWORD
+EMAIL_PORT_ = EMAIL_PORT
+EMAIL_USE_SSL = True
+EMAIL_USE_TLS = False
+# Для получения писем об ошибках
+SERVER_EMAIL = EMAIL_HOST_USER_
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER_
 
 # Определим URL для редиректа:
 LOGIN_REDIRECT_URL = 'core:home'

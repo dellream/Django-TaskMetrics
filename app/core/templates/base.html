@@ -48,7 +48,7 @@
                                         <a href="#faq" class="topnav__link">FAQ</a>
                                     </li>
                                     <li>
-                                        <a href="{% url 'account:logged_out' %}" class="topnav__link logout_logo fa-solid fa-person-through-window"></a>
+                                        <a href="{% url 'logout' %}" class="topnav__link logout_logo fa-solid fa-person-through-window"></a>
                                     </li>
                                 </ul>
                             </nav>
@@ -60,7 +60,7 @@
                                         <a href="{% url 'login' %}" class="topnav__link login">Войти</a>
                                     </li>
                                     <li>
-                                        <a href="{% url 'register' %}" class="topnav__link register">Регистрация</a>
+                                        <a href="{% url 'account:register' %}" class="topnav__link register">Регистрация</a>
                                     </li>
                                 </ul>
                             </div>

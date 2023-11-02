@@ -24,5 +24,7 @@ urlpatterns = [
     path('', include('core.urls', namespace='core')),
 
     # account
-    path('account/', include('account.urls'))
+    path('account/', include('account.urls')),
+    # Встроенные представления аутентификации
+    path('', include('django.contrib.auth.urls')),
 ]
