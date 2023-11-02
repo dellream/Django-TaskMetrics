@@ -92,4 +92,4 @@ class ServiceProfileUpdate:
         :param profile: Профиль пользователя.
         :return: URL для перенаправления.
         """
-        return reverse_lazy('profile_detail', kwargs={'slug': profile.slug})
+        return reverse_lazy('account:profile_detail', kwargs={'slug': profile.slug})
