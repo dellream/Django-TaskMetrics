@@ -46,6 +46,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'account.apps.AccountConfig',
+    'courses.apps.CoursesConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -124,7 +125,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
@@ -157,3 +158,7 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER_
 LOGIN_REDIRECT_URL = 'core:home'
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
+
+# Работа с медиафайлами
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
