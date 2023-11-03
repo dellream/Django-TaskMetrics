@@ -1,3 +1,5 @@
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -69,8 +71,7 @@ class Course(models.Model):
 
 class Module(models.Model):
     """
-    Модель модулей курсов.
-    Каждый курс поделен на модули.
+    Модель модуля, связанная с курсом.
     """
     course = models.ForeignKey(
         Course,
@@ -96,3 +97,83 @@ class Module(models.Model):
         return self.title
 
 
+class Content(models.Model):
+    """
+    Модель контента, связанная с модулем курса.
+
+    Используется для хранения и отображения различных типов контента,
+    таких как текстовые статьи, видеоролики, тесты и другие материалы,
+    которые привязаны к конкретным модулям курса.
+
+    Каждый объект Content связан с определенным модулем и содержит информацию
+    о типе контента и объекте контента, который относится к этому модулю.
+    """
+    module = models.ForeignKey(
+        Module,
+        related_name='contents',
+        on_delete=models.CASCADE,
+        verbose_name='Модуль для текущего контента'
+    )
+    content_type = models.ForeignKey(
+        ContentType,
+        on_delete=models.CASCADE,
+        verbose_name='Тип контента'
+    )
+    object_id = models.PositiveIntegerField(
+        verbose_name='Идентификатор объекта контента'
+    )
+    item = GenericForeignKey('content_type', 'object_id')
+
+    class Meta:
+        verbose_name = 'Контент'
+        verbose_name_plural = 'Контент'
+
+
+class ContentBase(models.Model):
+    """
+    Абстрактный класс модели для контента.
+
+    Определяет общие поля, которые будут использоваться
+    во всех моделях контента, которые наследуются от него.
+    """
+    owner = models.ForeignKey(
+        User,
+        # динамический параметр %(class)s, который будет заменен именем класса наследника
+        related_name='%(class)s_related',
+        on_delete=models.CASCADE,
+        verbose_name='Автор'
+    )
+    title = models.CharField(
+        max_length=250,
+        verbose_name='Заголовок'
+    )
+    created = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Дата создания'
+    )
+    updated = models.DateTimeField(
+        auto_now=True,
+        verbose_name='Дата изменения'
+    )
+
+    class Meta:
+        abstract = True
+
+    def __str__(self):
+        return self.title
+
+
+class Text(ContentBase):
+    content = models.TextField()
+
+
+class File(ContentBase):
+    file = models.FileField(upload_to='files')
+
+
+class Image(ContentBase):
+    file = models.FileField(upload_to='images')
+
+
+class Video(ContentBase):
+    url = models.URLField()
