@@ -21,6 +21,7 @@ class Subject(models.Model):
     )
 
     class Meta:
+        app_label = 'education'
         ordering = ['title']
         verbose_name = 'Субъект-родитель курсов'
         verbose_name_plural = 'Субъекты-родители курсов'
