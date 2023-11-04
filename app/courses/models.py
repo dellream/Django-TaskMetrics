@@ -3,6 +3,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.contrib.auth.models import User
 
+from .service.fields import OrderField
+
 
 class Subject(models.Model):
     """
@@ -87,14 +89,19 @@ class Module(models.Model):
         blank=True,
         verbose_name='Описание модуля'
     )
+    order = OrderField(
+        for_fields=['course'],
+        blank=True,
+        verbose_name='Порядковый номер модуля в курсе'
+    )
 
     class Meta:
-        ordering = ['title']
+        ordering = ['order']
         verbose_name = 'Модуль'
         verbose_name_plural = 'Модули'
 
     def __str__(self):
-        return self.title
+        return f'{self.order}. {self.title}'
 
 
 class Content(models.Model):
@@ -131,8 +138,14 @@ class Content(models.Model):
         verbose_name='Идентификатор объекта контента'
     )
     item = GenericForeignKey('content_type', 'object_id')
+    order = OrderField(
+        blank=True,
+        for_fields=['module'],
+        verbose_name='Порядковый номер контента в модуле'
+    )
 
     class Meta:
+        ordering = ['order']
         verbose_name = 'Контент'
         verbose_name_plural = 'Контент'
 
@@ -142,7 +155,7 @@ class ContentBase(models.Model):
     Абстрактный класс модели для контента.
 
     Определяет общие поля, которые будут использоваться
-    во всех моделях контента, которые наследуются от него.
+    во всех моделях контента при наследовании от ContentBase.
     """
     owner = models.ForeignKey(
         User,
