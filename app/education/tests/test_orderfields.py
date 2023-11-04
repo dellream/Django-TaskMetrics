@@ -1,6 +1,6 @@
 import pytest
 from django.core.exceptions import ObjectDoesNotExist
-from app.courses.models import Module, Content
+from app.education.models import Module, Content
 
 
 @pytest.mark.django_db
