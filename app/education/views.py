@@ -1,7 +1,9 @@
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import Course
+
 
 
 class OwnerMixin:
@@ -28,9 +30,14 @@ class OwnerEditMixin:
         return super().form_valid(form)
 
 
-class OwnerCourseMixin(OwnerMixin):
+class OwnerCourseMixin(OwnerMixin,
+                       LoginRequiredMixin,
+                       PermissionRequiredMixin):
     """
     Базовый миксин для управления курсами, связанными с автором.
+
+    Воспроизводит функциональность login_required и предоставляет
+    доступ к представлению только пользователям с конкретным разрешением
     """
     model = Course
     fields = [
@@ -57,6 +64,7 @@ class ManageCourseListView(OwnerCourseMixin, ListView):
     который будет выводить список курсов;
     """
     template_name = 'manage/course/list.html'
+    permission_required = 'education.view_course'
 
 
 class CourseCreateView(OwnerCourseEditMixin, CreateView):
@@ -69,7 +77,7 @@ class CourseCreateView(OwnerCourseEditMixin, CreateView):
     Это представление также является подклассом класса CreateView.
     Оно использует шаблон, определенный в примесном классе OwnerCourseEditMixin;
     """
-    pass
+    permission_required = 'education.add_course'
 
 
 class CourseUpdateView(OwnerCourseEditMixin, UpdateView):
@@ -84,7 +92,7 @@ class CourseUpdateView(OwnerCourseEditMixin, UpdateView):
     Это представление также является подклассом класса UpdateView.
     Оно использует шаблон, определенный в примесном классе OwnerCourseEditMixin;
     """
-    pass
+    permission_required = 'education.change_course'
 
 
 class CourseDeleteView(OwnerCourseMixin, DeleteView):
@@ -95,3 +103,4 @@ class CourseDeleteView(OwnerCourseMixin, DeleteView):
     template_name для шаблона, который будет подтверждать удаление курса.
     """
     template_name = 'manage/course/delete.html'
+    permission_required = 'education.delete_course'
