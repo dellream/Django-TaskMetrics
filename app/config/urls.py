@@ -30,7 +30,6 @@ urlpatterns = [
 
     # account
     path('account/', include('account.urls')),
-
     # Аутентификация и авторизация
     # Кастомный вход
     path('login/',
@@ -41,6 +40,10 @@ urlpatterns = [
          name='login'),
     # Встроенные представления аутентификации
     path('', include('django.contrib.auth.urls')),
+
+    # education
+    path('education/', include('education.urls'))
+
 ]
 
 # Раздаем статические файлы через джанго для разработки
