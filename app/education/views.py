@@ -46,7 +46,7 @@ class OwnerCourseMixin(OwnerMixin,
         'slug',
         'overview'
     ]
-    success_urls = reverse_lazy('manage_course_list')
+    success_url = reverse_lazy('manage_course_list')
 
 
 class OwnerCourseEditMixin(OwnerCourseMixin, OwnerEditMixin):
