@@ -219,7 +219,7 @@ class ContentCreateUpdateView(TemplateResponseMixin, View):
         Получает модель контента на основе переданного имени.
         """
         if model_name in ['text', 'video', 'image', 'file']:
-            return apps.get_model(app_label='courses', model_name=model_name)
+            return apps.get_model(app_label='education', model_name=model_name)
         return None
 
     def get_form(self, model, *args, **kwargs):
@@ -263,6 +263,23 @@ class ContentCreateUpdateView(TemplateResponseMixin, View):
             )
 
         return super().dispatch(request, module_id, model_name, id)
+
+    # def dispatch(self, request, *args, **kwargs):
+    #     self.module = get_object_or_404(
+    #         Module,
+    #         id=kwargs.get('module_id'),
+    #         course__owner=request.user
+    #     )
+    #     self.model = self.get_model(kwargs.get('model_name'))
+    #
+    #     if kwargs.get('id'):
+    #         self.obj = get_object_or_404(
+    #             self.model,
+    #             id=kwargs.get('id'),
+    #             owner=request.user
+    #         )
+    #
+    #     return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, module_id, model_name, id=None):
         """
@@ -329,3 +346,19 @@ class ContentDeleteView(View):
         content.item.delete()
         content.delete()
         return redirect('module_content_list', module.id)
+
+
+class ModuleContentListView(TemplateResponseMixin, View):
+    template_name = 'manage/module/content_list.html'
+
+    def get(self, request, module_id):
+        module = get_object_or_404(
+            Module,
+            id=module_id,
+            course__owner=request.user
+        )
+        return self.render_to_response(
+            {
+                'module': module
+            }
+        )
