@@ -5,7 +5,6 @@ from django.urls import reverse_lazy
 from .models import Course
 
 
-
 class OwnerMixin:
     """
     Миксин для фильтрации QuerySet'а по автору.
@@ -24,6 +23,7 @@ class OwnerEditMixin:
     """
     Миксин для назначения автора объекта.
     """
+
     def form_valid(self, form):
         """Назначает текущего пользователя в качестве автора."""
         form.instance.owner = self.request.user
@@ -46,7 +46,7 @@ class OwnerCourseMixin(OwnerMixin,
         'slug',
         'overview'
     ]
-    success_url = reverse_lazy('manage_course_list')
+    success_url = reverse_lazy('education:manage_course_list')
 
 
 class OwnerCourseEditMixin(OwnerCourseMixin, OwnerEditMixin):
