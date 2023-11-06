@@ -1,10 +1,13 @@
+from django.apps import apps
+from django.forms.models import modelform_factory
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic.base import TemplateResponseMixin, View
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from .models import Course
+
+from .models import Course, Module, Content
 from .forms import ModuleFormSet
 
 
@@ -118,7 +121,7 @@ class CourseModuleUpdateView(TemplateResponseMixin, View):
         template_name (str): Имя шаблона, который будет использоваться для отображения формы.
         course (Course): Курс, с которым работает представление.
 
-    Methods:
+    Method:
         get_formset(data=None): Создает и возвращает форму ModuleFormSet для заданного курса.
     """
     template_name = 'manage/module/formset.html'
@@ -199,3 +202,120 @@ class CourseModuleUpdateView(TemplateResponseMixin, View):
                 'formset': formset
             }
         )
+
+
+class ContentCreateUpdateView(TemplateResponseMixin, View):
+    """
+    Обрабатывает создание и обновление контента для модуля курса.
+    """
+
+    module = None  # Модуль, с которым связан контент
+    model = None  # Модель контента
+    obj = None  # Экземпляр объекта контента
+    template_name = 'manage/content/form.html'
+
+    def get_model(self, model_name):
+        """
+        Получает модель контента на основе переданного имени.
+        """
+        if model_name in ['text', 'video', 'image', 'file']:
+            return apps.get_model(app_label='courses', model_name=model_name)
+        return None
+
+    def get_form(self, model, *args, **kwargs):
+        """
+        Получает модельную форму на основе переданной модели.
+        """
+        form = modelform_factory(
+            model,
+            exclude=[
+                'owner',
+                'order',
+                'created',
+                'updated'
+            ]
+        )
+        return form(*args, **kwargs)
+
+    def dispatch(self, request, module_id, model_name, id=None):
+        """
+        Определяет, какой метод запроса следует использовать (GET, POST)
+        и обрабатывает его.
+
+        Аргументы:
+            - module_id: ИД модуля, с которым ассоциировано/будет ассоциировано
+            содержимое;
+            - model_name: имя модели содержимого, которое нужно создать/обновить;
+            - id: ИД обновляемого объекта. Он равен None, если создаются новые объекты.
+        """
+        self.module = get_object_or_404(
+            Module,
+            id=module_id,
+            course__owner=request.user
+        )
+        self.model = self.get_model(model_name)
+
+        if id:
+            self.obj = get_object_or_404(
+                self.model,
+                id=id,
+                owner=request.user
+            )
+
+        return super().dispatch(request, module_id, model_name, id)
+
+    def get(self, request, module_id, model_name, id=None):
+        """
+        Выполняется при получении GET-запроса.
+
+        Формируется модельная форма для обновляемого экземпляра класса контента
+
+        Аргументы:
+            - module_id: ИД модуля, с которым ассоциировано содержимое;
+            - model_name: имя модели содержимого;
+            - id: ИД обновляемого объекта. Он равен None, если создаются новые объекты.
+        """
+        form = self.get_form(self.model, instance=self.obj)
+        return self.render_to_response(
+            {
+                'form': form,
+                'object': self.obj
+            }
+        )
+
+    def post(self, request, module_id, model_name, id=None):
+        """
+        Выполняется при получении POST-запроса.
+
+        Обрабатывает отправку формы создания или обновления контента.
+
+        Аргументы:
+            - module_id: ИД модуля, с которым ассоциировано содержимое;
+            - model_name: имя модели содержимого;
+            - id: ИД обновляемого объекта. Он равен None, если создаются новые объекты.
+        """
+        form = self.get_form(
+            self.model,
+            instance=self.obj,
+            data=request.POST,
+            files=request.FILES
+        )
+
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.owner = request.user
+            obj.save()
+            if not id:
+                # Создаем новый контент
+                Content.objects.create(module=self.module,
+                                       item=obj)
+            return redirect('module_content_list', self.module.id)
+        return self.render_to_response(
+            {
+                'form': form,
+                'object': self.obj
+            }
+        )
+
+
+
