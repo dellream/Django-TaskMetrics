@@ -142,7 +142,7 @@ class CourseModuleUpdateView(TemplateResponseMixin, View):
             data=data
         )
 
-    def dispatch(self, request, pk):
+    def dispatch(self, request, course_id):
         """
         Метод предоставляется классом View.
 
@@ -151,17 +151,17 @@ class CourseModuleUpdateView(TemplateResponseMixin, View):
 
         Args:
             request (HttpRequest): HTTP-запрос.
-            pk (int): Идентификатор курса.
+            course_id (int): Идентификатор курса.
 
         Returns:
             HttpResponse: HTTP-ответ.
         """
         self.course = get_object_or_404(
             Course,
-            id=pk,
+            id=course_id,
             owner=self.request.user
         )
-        return super().dispatch(request, pk)
+        return super().dispatch(request, course_id)
 
     def get(self, request, *args, **kwargs):
         """

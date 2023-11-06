@@ -28,7 +28,7 @@ urlpatterns = [
 
     # Контент
     path('module/<int:module_id>/content/<str:model_name>/create/',
-         views.CourseModuleUpdateView.as_view(),
+         views.ContentCreateUpdateView.as_view(),
          name='module_content_create'),
     path('module/<int:module_id>/content/<str:model_name>/<id>/',
          views.ContentCreateUpdateView.as_view(),
