@@ -19,7 +19,7 @@ urlpatterns = [
          name='course_delete'),
 
     # Модули
-    path('<pk>/module/',
+    path('<int:course_id>/module/',
          views.CourseModuleUpdateView.as_view(),
          name='course_module_update'),
     path('module/<int:module_id>/',
