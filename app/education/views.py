@@ -1,8 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.shortcuts import redirect, get_object_or_404
+from django.views.generic.base import TemplateResponseMixin, View
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import Course
+from .forms import ModuleFormSet
 
 
 class OwnerMixin:
@@ -104,3 +107,95 @@ class CourseDeleteView(OwnerCourseMixin, DeleteView):
     """
     template_name = 'manage/course/delete.html'
     permission_required = 'education.delete_course'
+
+
+class CourseModuleUpdateView(TemplateResponseMixin, View):
+    """
+    Представление для управления модулями в рамках курса.
+    Для редактирования модулей использует формы ModuleFormSet.
+
+    Attributes:
+        template_name (str): Имя шаблона, который будет использоваться для отображения формы.
+        course (Course): Курс, с которым работает представление.
+
+    Methods:
+        get_formset(data=None): Создает и возвращает форму ModuleFormSet для заданного курса.
+    """
+    template_name = 'manage/module/formset.html'
+    course = None
+
+    def get_formset(self, data=None):
+        """
+        Создает и возвращает форму ModuleFormSet для заданного курса.
+
+        Args:
+            data: Данные для инициализации формы. По умолчанию None.
+
+        Returns:
+            ModuleFormSet: Форма для модулей, связанных с курсом.
+        """
+        return ModuleFormSet(
+            instance=self.course,
+            data=data
+        )
+
+    def dispatch(self, request, pk):
+        """
+        Метод предоставляется классом View.
+
+        Определяет курс, с которым работает представление, и делегирует запрос
+        соответствующему HTTP-методу.
+
+        Args:
+            request (HttpRequest): HTTP-запрос.
+            pk (int): Идентификатор курса.
+
+        Returns:
+            HttpResponse: HTTP-ответ.
+        """
+        self.course = get_object_or_404(
+            Course,
+            id=pk,
+            owner=self.request.user
+        )
+        return super().dispatch(request, pk)
+
+    def get(self, request, *args, **kwargs):
+        """
+        Обрабатывает GET-запрос и отображает форму для редактирования модулей.
+
+        Args:
+            request (HttpRequest): GET-запрос.
+
+        Returns:
+            HttpResponse: HTTP-ответ с отображением формы для редактирования модулей.
+        """
+        formset = self.get_formset()
+        return self.render_to_response(
+            {
+                'course': self.course,
+                'formset': formset
+            }
+        )
+
+    def post(self, request, *args, **kwargs):
+        """
+        Обрабатывает POST-запрос и сохраняет изменения модулей.
+
+        Args:
+            request (HttpRequest): POST-запрос.
+
+        Returns:
+            HttpResponse: После успешного сохранения, перенаправляет на список курсов.
+        """
+        formset = self.get_formset(data=request.POST)
+
+        if formset.is_valid():
+            formset.save()
+            return redirect('education:manage_course_list')
+        return self.render_to_response(
+            {
+                'course': self.course,
+                'formset': formset
+            }
+        )
