@@ -26,7 +26,7 @@
         {% endfor %}
       </ul>
       <p>
-        <a href="{% url 'education:module_content_list' course.id %}">Редактировать модули</a>
+        <a href="{% url 'education:course_module_update' course.id %}">Редактировать модули</a>
         {% if course.module.count > 0 %}
           <a href="{% url 'education:module_content_list' course.modules.first.id %}">Управление содержимым</a>
         {% endif %}
@@ -40,8 +40,8 @@
           <div data-id="{{ content.id }}">
             {% with item=content.item %}
               <p>{{ item }} ({{ item|model_name }})</p>
-              <a href="{% url 'education:module_content_update' module_id item|model_name item.id %}">Редактировать</a>
-              <form action="{% url 'education:module_content_list' content.id %}" method="post">
+              <a href="{% url 'education:module_content_update' module.id item|model_name item.id %}">Редактировать</a>
+              <form action="{% url 'education:module_content_delete' content.id %}" method="post">
                 <input type="submit" value="Удалить">
                 {% csrf_token %}
               </form>
@@ -54,22 +54,22 @@
       <h3>Добавить новый контент:</h3>
       <ul class="content-types">
         <li>
-          <a href="{% url 'education:module_content_list' module.id 'text' %}">
+          <a href="{% url 'education:module_content_create' module.id 'text' %}">
             Текст
           </a>
         </li>
         <li>
-          <a href="{% url 'education:module_content_list' module.id 'image' %}">
+          <a href="{% url 'education:module_content_create' module.id 'image' %}">
             Изображение
           </a>
         </li>
         <li>
-          <a href="{% url 'education:module_content_list' module.id 'video' %}">
+          <a href="{% url 'education:module_content_create' module.id 'video' %}">
             Видео
           </a>
         </li>
         <li>
-          <a href="{% url 'education:module_content_list' module.id 'file' %}">
+          <a href="{% url 'education:module_content_create' module.id 'file' %}">
             Файл
           </a>
         </li>

@@ -326,7 +326,7 @@ class ContentCreateUpdateView(TemplateResponseMixin, View):
                 # Создаем новый контент
                 Content.objects.create(module=self.module,
                                        item=obj)
-            return redirect('module_content_list', self.module.id)
+            return redirect('education:module_content_list', self.module.id)
         return self.render_to_response(
             {
                 'form': form,
@@ -336,7 +336,21 @@ class ContentCreateUpdateView(TemplateResponseMixin, View):
 
 
 class ContentDeleteView(View):
+    """
+    Удаляет содержимое (контент) модуля.
+    """
+
     def post(self, request, id):
+        """
+        Обрабатывает POST-запрос для удаления содержимого модуля.
+
+        Args:
+            request (HttpRequest): HTTP-запрос.
+            id (int): Идентификатор содержимого для удаления.
+
+        Returns:
+            HttpResponseRedirect: После успешного удаления перенаправляет на список содержимого модуля.
+        """
         content = get_object_or_404(
             Content,
             id=id,
@@ -345,13 +359,26 @@ class ContentDeleteView(View):
         module = content.module
         content.item.delete()
         content.delete()
-        return redirect('module_content_list', module.id)
+        return redirect('education:module_content_list', module.id)
 
 
 class ModuleContentListView(TemplateResponseMixin, View):
+    """
+    Отображает список содержимого модуля.
+    """
     template_name = 'manage/module/content_list.html'
 
     def get(self, request, module_id):
+        """
+        Обрабатывает GET-запрос и отображает список содержимого модуля.
+
+        Args:
+            request (HttpRequest): GET-запрос.
+            module_id (int): Идентификатор модуля, содержимое которого необходимо отобразить.
+
+        Returns:
+            HttpResponse: Ответ с отображением списка содержимого модуля.
+        """
         module = get_object_or_404(
             Module,
             id=module_id,
