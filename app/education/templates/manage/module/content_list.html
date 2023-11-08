@@ -27,9 +27,6 @@
       </ul>
       <p>
         <a href="{% url 'education:course_module_update' course.id %}">Редактировать модули</a>
-        {% if course.module.count > 0 %}
-          <a href="{% url 'education:module_content_list' course.modules.first.id %}">Управление содержимым</a>
-        {% endif %}
       </p>
     </div>
     <div class="module">
