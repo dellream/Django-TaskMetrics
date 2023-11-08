@@ -66,9 +66,6 @@
                                 </ul>
                             </div>
                         {% endif %}
-
-
-
                     </div>
                 </div>
             </div>
@@ -147,6 +144,17 @@
 
 
     </div>
+
+    {% block include_js %}
+    {% endblock %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // DOM-модель загружена
+            {% block domready %}
+            {% endblock %}
+        })
+    </script>
 
     <script src="{% static 'js/header_burger.js' %}"></script>
     <script src="https://kit.fontawesome.com/1000bd427f.js" crossorigin="anonymous"></script>
