@@ -1,9 +1,13 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.db.models import Count
+from django.shortcuts import get_object_or_404
+from django.views.generic.base import TemplateResponseMixin, View
+from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
-from education.models import Course, Module, Content
+from education.models import Course, Module, Content, Subject
 from education.forms import ModuleFormSet
 
 
@@ -106,3 +110,49 @@ class CourseDeleteView(OwnerCourseMixin, DeleteView):
     """
     template_name = 'manage/course/delete.html'
     permission_required = 'education.delete_course'
+
+
+class CourseListView(TemplateResponseMixin, View):
+    """
+    Отображает список курсов в зависимости от выбранной темы (проекта).
+    """
+    model = Course
+    template_name = 'courses/list.html'
+
+    def get(self, request, subject=None):
+        """
+        Обрабатывает GET-запрос и отображает список курсов.
+
+        Args:
+            request (HttpRequest): GET-запрос.
+            subject (str): Строка со значением SLUG-а темы. По умолчанию None.
+
+        Returns:
+            HttpResponse: Ответ с отображением списка курсов.
+        """
+        subjects = Subject.objects.annotate(
+            total_courses=Count('courses')
+        )
+        courses = Course.objects.annotate(
+            total_modules=Count('modules')
+        )
+        if subject:
+            subject = get_object_or_404(Subject, slug=subject)
+            courses = courses.filter(subject=subject)
+        return self.render_to_response(
+            {
+                'subjects': subjects,
+                'subject': subject,
+                'courses': courses
+            }
+        )
+
+
+class CourseDetailView(DetailView):
+    """
+    Представление детальной информации отображения курса.
+
+    DetailView ожидает, что pk или slug будет извлекать 1 объект курса
+    """
+    model = Course
+    template_name = 'courses/detail.html'

@@ -5,7 +5,8 @@ app_name = 'education'
 
 urlpatterns = [
     # Курсы
-    path('courses_list/',
+    # Менеджмент курсами
+    path('my_courses/',
          views.ManageCourseListView.as_view(),
          name='manage_course_list'),
     path('create/',
@@ -17,6 +18,16 @@ urlpatterns = [
     path('<pk>/delete/',
          views.CourseDeleteView.as_view(),
          name='course_delete'),
+    # Просмотр курсов
+    path('',
+         views.CourseListView.as_view(),
+         name='course_list'),
+    path('subject/<slug:subject>/',
+         views.CourseListView.as_view(),
+         name='course_list_subject'),
+    path('<slug:slug>/',
+         views.CourseDetailView.as_view(),
+         name='course_detail'),
 
     # Модули
     path('<int:course_id>/module/',
