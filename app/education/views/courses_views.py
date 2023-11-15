@@ -8,7 +8,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
 from education.models import Course, Module, Content, Subject
-from education.forms import ModuleFormSet
+from account.forms import CourseEnrollForm
 
 
 class OwnerMixin:
@@ -156,3 +156,19 @@ class CourseDetailView(DetailView):
     """
     model = Course
     template_name = 'courses/detail.html'
+
+    def get_context_data(self, **kwargs):
+        """
+        Возвращает дополнительные данные контекста, включая форму записи на курс.
+
+        Аргументы:
+            **kwargs: Дополнительные аргументы контекста.
+
+        Возвращает:
+            dict: Словарь с данными контекста, включая форму записи на курс.
+        """
+        context = super().get_context_data(**kwargs)
+        context['enroll_form'] = CourseEnrollForm(
+            initial={'course': self.object}
+        )
+        return context

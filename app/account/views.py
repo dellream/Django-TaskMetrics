@@ -1,7 +1,10 @@
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views.generic import DetailView, UpdateView
+from django.views.generic.edit import FormView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .forms import ProfileUpdateForm
+from .forms import ProfileUpdateForm, CourseEnrollForm
 from .models import Profile
 from .services.services import service_create_user_registration_form, ServiceProfileUpdate
 
@@ -69,6 +72,48 @@ class ProfileUpdateView(UpdateView):
 
     def get_success_url(self):
         return ServiceProfileUpdate.get_success_url(self.object)
+
+
+class StudentEnrollCourseView(LoginRequiredMixin, FormView):
+    """
+    Представление для обработки запросов на запись студента на курс.
+
+    Атрибуты:
+        course (Course): Курс, на который записывается студент.
+        form_class (class): Класс формы, используемый для записи.
+
+    Методы:
+        form_valid(form): Обрабатывает случай, когда форма является валидной, и записывает студента на курс.
+        get_success_url(): Возвращает URL для перенаправления после успешной записи.
+    """
+    course = None
+    form_class = CourseEnrollForm
+
+    def form_valid(self, form):
+        """
+        Обрабатывает случай, когда форма является валидной, и записывает студента на курс.
+
+        Аргументы:
+            form (CourseEnrollForm): Валидная форма записи.
+
+        Возвращает:
+            HttpResponse: Перенаправляет на URL успешной записи.
+        """
+        self.course = form.cleaned_data['course']
+        self.course.students.add(self.request.user)
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        """
+        Возвращает URL для перенаправления после успешной записи.
+
+        Возвращает:
+            str: URL успешной записи.
+        """
+        return reverse_lazy(
+            'account:student_course_detail',
+            args=[self.course.id]
+        )
 
 
 if __name__ == '__main__':

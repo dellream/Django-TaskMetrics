@@ -13,5 +13,12 @@ urlpatterns = [
          name='profile_detail'),
 
     # Редактирование профиля
-    path('profile/<str:slug>/edit', views.ProfileUpdateView.as_view(), name='profile_edit'),
+    path('profile/<str:slug>/edit',
+         views.ProfileUpdateView.as_view(),
+         name='profile_edit'),
+
+    # Зачисление на курс
+    path('enroll-course/',
+         views.StudentEnrollCourseView.as_view(),
+         name='student_enroll_course'),
 ]

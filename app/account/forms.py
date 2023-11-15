@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from .models import Profile
+from education.models import Course
 
 
 class LoginForm(AuthenticationForm):
@@ -105,3 +106,13 @@ class ProfileUpdateForm(forms.ModelForm):
             'bio': 'Информация о себе',
             'slug': 'Ссылка на профиль'
         }
+
+
+class CourseEnrollForm(forms.Form):
+    """
+    Форма для зачисления студентов на курсы
+    """
+    course = forms.ModelChoiceField(
+        queryset=Course.objects.all(),
+        widget=forms.HiddenInput
+    )

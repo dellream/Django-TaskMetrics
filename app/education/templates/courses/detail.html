@@ -12,7 +12,7 @@
         <div class="module">
             <h2>Краткий обзор</h2>
             <p>
-                <a href="{% url "education:course_list_subject" subject.slug %}">
+                <a href="{% url 'education:course_list_subject' subject.slug %}">
                     {{ subject.title }}
                 </a>
                 Модулей: {{ object.modules.count }} 
@@ -20,6 +20,17 @@
             </p>
 
             {{ object.overview|linebreaks }}
+            {% if request.user.is_authenticated %}
+                <form action="{% url 'account:student_enroll_course' %}" method="post">
+                    {{ enroll_form }}
+                    {% csrf_token %}
+                    <input type="submit" value="Записаться на курс">
+                </form>
+            {% else %}
+                <a href="{% url 'account:register' %}" class="button">
+                    Зарегистрируйтесь, чтобы записаться
+                </a>
+            {% endif %}
         </div>
     {% endwith %}
 {% endblock %}
