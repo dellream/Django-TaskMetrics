@@ -17,6 +17,8 @@
 /* ---------------- Модули ---------------- */
 
 .module {
+    display: flex;
+    flex-direction: column;
     padding:10px 20px;
     float:left;
     width:600px;
@@ -61,6 +63,8 @@
 #module-contents div:hover {
     cursor:move;
 }
+
+
 
 
 /* ---------------- Контент ---------------- */

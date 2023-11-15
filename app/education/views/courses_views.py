@@ -7,7 +7,7 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
-from education.models import Course, Module, Content, Subject
+from education.models import Course, Subject
 from account.forms import CourseEnrollForm
 
 
@@ -169,6 +169,5 @@ class CourseDetailView(DetailView):
         """
         context = super().get_context_data(**kwargs)
         context['enroll_form'] = CourseEnrollForm(
-            initial={'course': self.object}
-        )
+            initial={'course': self.object})
         return context

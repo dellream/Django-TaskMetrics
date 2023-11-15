@@ -63,7 +63,7 @@ class Course(models.Model):
         auto_now_add=True,
         verbose_name='Дата создания курса'
     )
-    students = models.ManyToManyField(
+    account = models.ManyToManyField(
         User,
         related_name='courses_joined',
         verbose_name='Участники курса',

@@ -100,7 +100,7 @@ class StudentEnrollCourseView(LoginRequiredMixin, FormView):
             HttpResponse: Перенаправляет на URL успешной записи.
         """
         self.course = form.cleaned_data['course']
-        self.course.students.add(self.request.user)
+        self.course.account.add(self.request.user)
         return super().form_valid(form)
 
     def get_success_url(self):

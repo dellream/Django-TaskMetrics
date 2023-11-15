@@ -6,31 +6,40 @@
 
 {% block content %}
     {% with subject=object.subject %}
-        <h1>
-            {{ object.title }}
-        </h1>
+        
         <div class="module">
-            <h2>Краткий обзор</h2>
-            <p>
-                <a href="{% url 'education:course_list_subject' subject.slug %}">
-                    {{ subject.title }}
-                </a>
-                Модулей: {{ object.modules.count }} 
-                Автор: {{ object.owner.get_full_name }}
-            </p>
+            <h1>
+                {{ object.title }}
+            </h1>
 
-            {{ object.overview|linebreaks }}
-            {% if request.user.is_authenticated %}
-                <form action="{% url 'account:student_enroll_course' %}" method="post">
-                    {{ enroll_form }}
-                    {% csrf_token %}
-                    <input type="submit" value="Записаться на курс">
-                </form>
-            {% else %}
-                <a href="{% url 'account:register' %}" class="button">
-                    Зарегистрируйтесь, чтобы записаться
-                </a>
-            {% endif %}
+            <div class="module__head-overview">
+                <h2>Краткий обзор</h2>
+                <p>
+                    <a href="{% url 'education:course_list_subject' subject.slug %}">
+                        {{ subject.title }}
+                    </a>
+                    Модулей: {{ object.modules.count }} 
+                    Автор: {{ object.owner.get_full_name }}
+                </p>
+            </div>
+            
+            <div class="module__content-overview">
+                {{ object.overview|linebreaks }}
+            </div>
+            
+            <div class="module__enroll-form">
+                {% if request.user.is_authenticated %}
+                    <form action="{% url 'account:student_enroll_course' %}" method="post">
+                        {{ enroll_form }}
+                        {% csrf_token %}
+                        <input type="submit" value="Записаться на курс" class="module__enroll_input">
+                    </form>
+                {% else %}
+                    <a href="{% url 'account:register' %}" class="button">
+                        Зарегистрируйтесь, чтобы записаться
+                    </a>
+                {% endif %}
+            </div>            
         </div>
     {% endwith %}
 {% endblock %}
