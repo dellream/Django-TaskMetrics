@@ -2,8 +2,10 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, UpdateView
 from django.views.generic.edit import FormView
+from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from education.models import Course
 from .forms import ProfileUpdateForm, CourseEnrollForm
 from .models import Profile
 from .services.services import service_create_user_registration_form, ServiceProfileUpdate
@@ -100,7 +102,7 @@ class StudentEnrollCourseView(LoginRequiredMixin, FormView):
             HttpResponse: Перенаправляет на URL успешной записи.
         """
         self.course = form.cleaned_data['course']
-        self.course.account.add(self.request.user)
+        self.course.students.add(self.request.user)
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -114,6 +116,81 @@ class StudentEnrollCourseView(LoginRequiredMixin, FormView):
             'account:student_course_detail',
             args=[self.course.id]
         )
+
+
+class StudentCourseListView(LoginRequiredMixin, ListView):
+    """
+    Представление списка курсов для студента.
+
+    Attributes:
+        model (Course): Модель курса.
+        template_name (str): Имя шаблона для отображения списка курсов.
+
+    Methods:
+        get_queryset(): Получает и возвращает queryset курсов для текущего студента.
+    """
+    model = Course
+    template_name = 'students/course/list.html'
+
+    def get_queryset(self):
+        """
+        Получает и возвращает queryset курсов для текущего студента.
+
+        Returns:
+            QuerySet: queryset курсов для текущего студента.
+        """
+        qs = super().get_queryset()
+        return qs.filter(students__in=[self.request.user])
+
+
+class StudentCourseDetailView(DetailView):
+    """
+    Представление детальной информации о курсе для студента.
+
+    Attributes:
+        model (Course): Модель курса.
+        template_name (str): Имя шаблона для отображения детальной информации.
+
+    Methods:
+        get_queryset(): Получает и возвращает queryset курсов для текущего студента.
+        get_context_data(**kwargs): Получает и возвращает контекст для отображения детальной информации о курсе.
+    """
+    model = Course
+    template_name = 'students/course/detail.html'
+
+    def get_queryset(self):
+        """
+        Получает и возвращает queryset курсов для текущего студента.
+
+        Returns:
+            QuerySet: queryset курсов для текущего студента.
+        """
+        qs = super().get_queryset()
+        return qs.filter(students__in=[self.request.user])
+
+    def get_context_data(self, **kwargs):
+        """
+        Получает и возвращает контекст для отображения детальной информации о курсе.
+
+        Args:
+            **kwargs: Дополнительные аргументы.
+
+        Returns:
+            dict: Контекст для отображения детальной информации о курсе.
+        """
+        context = super().get_context_data(**kwargs)
+
+        # Получить объект Course
+        course = self.get_object()
+
+        if 'module_id' in self.kwargs:
+            # Взять текущий модуль
+            context['module'] = course.modules.get(id=self.kwargs['module_id'])
+        else:
+            # Взять первый модуль
+            context['module'] = course.modules.all()[0]
+
+        return context
 
 
 if __name__ == '__main__':
