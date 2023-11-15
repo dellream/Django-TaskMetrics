@@ -145,6 +145,41 @@ input[type=submit], a.button {
     z-index: 3;
 }
 
+.topnav_educ_dropdown {
+    float: left;
+    overflow: hidden;
+}
+
+.topnav_educ_dropdown .topnav_educ_dropdown__btn {
+    border: none;
+    outline: none;
+    background-color: inherit;
+    font-family: inherit; /* Важно для адаптива */
+    margin: 0; /* Важно для адаптива */
+}
+
+.topnav_educ_dropdown__content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.topnav_educ_dropdown__content a {
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.topnav_educ_dropdown:hover .topnav_educ_dropdown__content {
+    display: block;
+}
+
 .topnav__welcome_list {
     display: flex;
     position: relative;

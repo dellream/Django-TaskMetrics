@@ -43,7 +43,15 @@
                                         <a href="#Дашборд" class="topnav__link">Дашборд</a>
                                     </li>
                                     <li>
-                                        <a href="{% url 'education:manage_course_list' %}" class="topnav__link">Обучение</a>
+                                        <div class="topnav_educ_dropdown">
+                                            <button class="topnav__link topnav_educ_dropdown__btn">Обучение
+                                                <i></i>
+                                            </button>
+                                            <div class="topnav_educ_dropdown__content">
+                                                <a href="{% url 'education:course_list' %}" class='topnav__link'>Все курсы</a>
+                                                <a href="{% url 'education:manage_course_list' %}" class='topnav__link'>Управление курсами</a>
+                                            </div> 
+                                        </div>
                                     </li>
                                     <li>
                                         <a href="#faq" class="topnav__link">FAQ</a>
