@@ -5,7 +5,7 @@
 
 <div class="detail__lowbody__add-commentary">
     
-    {% comment %} <h2 class="detail__subtitle">Добавить новый комментарий</h2> {% endcomment %}
+
     <form action="{% url 'faq:post_commentary' comm.id %}" method="post" id="comment-form">
         {% csrf_token %}
         {{ form.as_p }}

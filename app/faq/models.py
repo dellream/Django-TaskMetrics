@@ -51,12 +51,17 @@ class Post(models.Model):
 
 
 class Commentary(models.Model):
-    post = models.ForeignKey(Post,
-                             on_delete=models.CASCADE,
-                             related_name='commentary_post')
-    name = models.CharField(max_length=80)
-    email = models.EmailField()
-    body = models.TextField()
+    post = models.ForeignKey(
+        Post,
+        on_delete=models.CASCADE,
+        related_name='commentary_post'
+    )
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name='Автор комментария'
+    )
+    body = models.TextField(verbose_name='Комментарий')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True)
@@ -70,5 +75,5 @@ class Commentary(models.Model):
         verbose_name_plural = 'Комментарии'
 
     def __str__(self):
-        return f'{self.name} оставил комментарий под постом {self.post}'
+        return f'{self.author.username} оставил комментарий под постом {self.post}'
 

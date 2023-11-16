@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.http import require_POST
 
@@ -67,16 +67,16 @@ def faq_commentary(request, post_id):
         pk=post_id,
         status=Post.Status.PUBLISHED
     )
-    commentary = None
-    # Отправляем комментарий
-    form = CommentaryForm(data=request.POST)
-    if form.is_valid():
-        # Создаем объект класса Commentary, не сохраняя его в базе данных
-        commentary = form.save(commit=False)
-        # Назначаем пост комментарию
-        commentary.post = post
-        # Сохраним комментарий в БД
-        commentary.save()
+
+    if request.method == 'POST':
+        form = CommentaryForm(data=request.POST, request=request)
+        if form.is_valid():
+            commentary = form.save(commit=False)
+            commentary.post = post  # Установите связанный пост для комментария
+            commentary.save()
+            return redirect('faq:faq_list')
+    else:
+        form = CommentaryForm(request=request)
 
     return render(
         request,
@@ -84,6 +84,5 @@ def faq_commentary(request, post_id):
         {
             'post': post,
             'form': form,
-            'commentary': commentary
         }
     )
