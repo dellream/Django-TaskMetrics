@@ -42,7 +42,10 @@ urlpatterns = [
     path('', include('django.contrib.auth.urls')),
 
     # education
-    path('education/', include('education.urls'))
+    path('education/', include('education.urls')),
+
+    # faq
+    path('faq/', include('faq.urls'))
 
 ]
 
