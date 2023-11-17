@@ -72,7 +72,7 @@ def faq_commentary(request, post_id):
         form = CommentaryForm(data=request.POST, request=request)
         if form.is_valid():
             commentary = form.save(commit=False)
-            commentary.post = post  # Установите связанный пост для комментария
+            commentary.post = post  # Установим связанный пост для комментария
             commentary.save()
             return redirect('faq:faq_list')
     else:
