@@ -16,9 +16,13 @@ LOGGING = {
             'maxBytes': 1024 * 1024 * 100,  # 100 MB
             'backupCount': 10,
         },
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'standart',
+        },
     },
     'root': {
-        'handlers': ['rotating_file'],
+        'handlers': ['rotating_file', 'console'],
         'level': 'WARNING',
     },
 }
