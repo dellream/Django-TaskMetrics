@@ -24,6 +24,7 @@ from .conf import (
     EMAIL_HOST_PASSWORD,
     EMAIL_PORT
 )
+from .logging_config import LOGGING
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -165,3 +166,6 @@ LOGOUT_URL = 'logout'
 # Работа с медиафайлами
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Логирование
+LOGGING_CONFIG = None  # Использование конфигурации логирования из logging_config.py

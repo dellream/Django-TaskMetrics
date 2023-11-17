@@ -45,8 +45,10 @@ urlpatterns = [
     path('education/', include('education.urls')),
 
     # faq
-    path('faq/', include('faq.urls'))
+    path('faq/', include('faq.urls')),
 
+    # chat
+    path('chat/', include('chat.urls')),
 ]
 
 # Раздаем статические файлы через джанго для разработки
