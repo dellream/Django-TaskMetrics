@@ -1,0 +1,31 @@
+
+#chat {
+    height: 300px;
+    overflow-y: scroll;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+
+#chat-input {
+    margin-top: 10px;
+    display: flex;
+}
+
+#chat-message-input {
+    width: 100%;
+    padding: 5px;
+    margin-right: 10px;
+}
+
+#chat-message-submit {
+    padding: 5px 10px;
+    background-color: #D2B48C;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#chat-message-submit:hover {
+    background-color: #a07b45;
+}

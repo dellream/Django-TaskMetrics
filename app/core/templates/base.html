@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{% static 'css/account.css' %}">
     <link rel="stylesheet" href="{% static 'css/education.css' %}">
     <link rel="stylesheet" href="{% static 'css/faq.css' %}">
+    <link rel="stylesheet" href="{% static 'css/chat.css' %}">
 
     {% comment %} <link rel="stylesheet" href="{% static 'fonts/font-awesome.min.css'%}"> {% endcomment %}
 
@@ -39,9 +40,6 @@
                                 <ul class="topnav__list">
                                     <li>
                                         <a href="{% url 'account:profile_detail' slug=request.user.profile.slug %}"  class="topnav__link">Профиль</a>
-                                    </li>>
-                                    <li>
-                                        <a href="#Дашборд" class="topnav__link">Дашборд</a>
                                     </li>
                                     <li>
                                         <div class="topnav_educ_dropdown">
@@ -53,6 +51,9 @@
                                                 <a href="{% url 'education:manage_course_list' %}" class='topnav__link'>Управление курсами</a>
                                             </div> 
                                         </div>
+                                    </li>
+                                    <li>
+                                        <a href="http://localhost:8000/chat/room/5/" class="topnav__link">Чат-комната #5</a>
                                     </li>
                                     <li>
                                         <a href="{% url 'faq:faq_list' %}" class="topnav__link">FAQ</a>

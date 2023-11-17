@@ -29,7 +29,7 @@ def course_chat_room(request, course_id):
     except (Course.DoesNotExist, ValueError) as e:
         # Course.DoesNotExist - курс не существует
         # ValueError - возникает при некорректном значении course_id
-        logger.error(f"Ошибка: {e}")
+        logger.error(e)
         return HttpResponseForbidden("Некорректный курс или курс не найден.")
     return render(
         request,
