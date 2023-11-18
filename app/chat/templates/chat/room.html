@@ -15,5 +15,6 @@
 
 {% block include_js %}
     {{ course.id|json_script:"course-id" }}
+    {{ request.user.username|json_script:"request-user" }}
     <script src="{% static 'js/chat.js' %}"></script>
 {% endblock %}

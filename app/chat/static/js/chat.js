@@ -3,6 +3,10 @@
 const courseIdElement = document.getElementById('course-id');
 const courseId = JSON.parse(courseIdElement.textContent);
 
+// Идентично courseId выполняем тоже самое для пользователя
+const requestUserId = document.getElementById('request-user')
+const requestUser = JSON.parse(requestUserId.textContent);
+
 // Формируем URL для WebSocket-соединения, используя текущий хост и courseId
 const url = `ws://${window.location.host}/ws/chat/room/${courseId}/`;
 
@@ -16,7 +20,19 @@ chatSocket.onmessage = function(event) {
     
     // Получаем элемент 'chat' из HTML и добавляем новое сообщение в виде div-элемента
     const chat = document.getElementById('chat');
-    chat.innerHTML += `<div class="message">${data.message}</div>`;
+    const dateOptions = {hour: 'numeric', minute: 'numeric', hour12: false};
+    const datetime = new Date(data.datetime).toLocaleString('en', dateOptions);
+    const isMe = data.user === requestUser;
+    const source = isMe ? 'me' : 'other';
+    const name = isMe ? 'Мое сообщение' : data.user;
+
+    chat.innerHTML += `
+        <div class="message ${source}">
+            <strong>${name}</strong>
+            <span class="date">${datetime}</span><br>
+            ${data.message}
+        </div>
+    `;
     
     // Прокручиваем чат вниз, чтобы видеть последнее сообщение
     chat.scrollTop = chat.scrollHeight;

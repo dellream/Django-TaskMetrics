@@ -41,3 +41,9 @@
     min-width:440px;
     clear:both;
 }
+
+#chat .message.me {
+    display:inline;
+    float:right;
+    background:#DCEDE0;
+}
