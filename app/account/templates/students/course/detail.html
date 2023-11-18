@@ -25,6 +25,11 @@
         <li>Пока модулей нет.</li>
       {% endfor %}
     </ul>
+    <h3>
+      <a href="{% url "chat:course_chat_room" object.id %}">
+      Чат-комната данного курса
+      </a>
+    </h3>
   </div>
   <div class="module">
       {% for content in module.contents.all %}
