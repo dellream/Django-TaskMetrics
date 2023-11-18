@@ -13,7 +13,7 @@ LOGGING = {
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': 'logging.log',
             'formatter': 'standart',
-            'maxBytes': 1024 * 1024 * 100,  # 100 MB
+            'maxBytes': 1024 * 1024 * 15,  # 15 MB
             'backupCount': 10,
             'level': 'WARNING',  # Установим уровень на WARNING, чтобы записывать только WARNING и выше
         },
