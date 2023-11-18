@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import logging
 from pathlib import Path
 from .conf import (
     DB_HOST,
@@ -22,9 +22,11 @@ from .conf import (
     EMAIL_HOST,
     EMAIL_HOST_USER,
     EMAIL_HOST_PASSWORD,
-    EMAIL_PORT
+    EMAIL_PORT, REDIS_HOST, REDIS_PORT
 )
 from .logging_config import LOGGING
+logger = logging.getLogger(__name__)
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -171,3 +173,12 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # Логирование
 LOGGING_CONFIG = None  # Использование конфигурации логирования из logging_config.py
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [(f'{REDIS_HOST}', REDIS_PORT)],
+        }
+    }
+}
