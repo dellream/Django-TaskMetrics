@@ -131,7 +131,7 @@ input[type=submit], a.button {
     z-index: 3;
 }
 .topnav__logo img{
-    max-width: 100%;
+    max-width: 70%;
     display: block;
 }
 
@@ -419,7 +419,7 @@ input[type=submit], a.button {
 .footer__content__first-col img {
     width: 20%;
     align-items: start;
-    min-width: 90px;
+    min-width: 250px;
 
 }
 

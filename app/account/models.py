@@ -24,7 +24,7 @@ class Profile(models.Model):
     avatar = models.ImageField(
         verbose_name='Фотография профиля',
         upload_to='profile_avatars/%Y/%m/%d/',
-        default='profile_avatars/default_profile_avatar.jpg',
+        default='profile_avatars/default_profile_avatar.png',
         blank=True,
         validators=[FileExtensionValidator(allowed_extensions=('png', 'jpg', 'jpeg'))]
     )

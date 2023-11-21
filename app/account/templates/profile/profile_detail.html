@@ -1,20 +1,30 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-<div class="wrapper">
+<div class="profile-wrapper">
     <h5 class="card-title">{{ profile }}</h5>
-        <div class="card-text">
-            <ul>
-                <li>Никнейм: {{ profile.user.username }}</li>
-                {% if profile.user.get_full_name %} <li>Имя и фамилия: {{ profile.user.get_full_name }}</li> {% endif %}
-                <li>Заходил: {{ profile.user.last_login }}</li>
-                <li>Дата рождения: {{ profile.birth_date }}</li>
-                <li>О себе: {{ profile.bio }}</li>
-            </ul>
-            {% if request.user == profile.user %}
-                <a href="{% url 'account:profile_edit' slug=profile.slug %}">Редактировать профиль</a>
-                <a href="{% url 'password_change' %}">Изменить пароль</a>
+    <div class="card-text">
+        <div class="profile-info">
+            {% if profile.avatar %}
+                <img src="{{ profile.avatar.url }}" alt="Аватар: {{ profile.user.username }}" class="profile-avatar">
+            {% else %}
+                <img src="{% static 'img/profile_avatars/default_profile_avatar.jpg' %}" alt="Дефолтный аватар" class="profile-avatar">
             {% endif %}
+            <ul class="profile-details">
+                <li><span class="detail-label">Никнейм:</span> {{ profile.user.username }}</li>
+                {% if profile.user.get_full_name %} <li><span class="detail-label">Имя и фамилия:</span> {{ profile.user.get_full_name }}</li> {% endif %}
+                <li><span class="detail-label">Заходил:</span> {{ profile.user.last_login }}</li>
+                <li><span class="detail-label">Дата рождения:</span> {{ profile.birth_date }}</li>
+                <li><span class="detail-label">О себе:</span> {{ profile.bio }}</li>
+            </ul>
         </div>
+        {% if request.user == profile.user %}
+            <div class="profile-actions">
+                <a href="{% url 'account:profile_edit' slug=profile.slug %}" class="edit-profile-link">Редактировать профиль</a>
+                <a href="{% url 'password_change' %}" class="change-password-link">Изменить пароль</a>
+            </div>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}

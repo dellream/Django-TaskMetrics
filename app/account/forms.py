@@ -84,12 +84,17 @@ class UserUpdateForm(forms.ModelForm):
 
 
 class ProfileUpdateForm(forms.ModelForm):
-    """
-    Форма изменения профиля
-    """
     birth_date = forms.DateField(
         widget=forms.DateInput(attrs={'type': 'date'}),
-        label='Дата рождения'
+        label='Дата рождения',
+        help_text='Введите вашу дату рождения'
+    )
+
+    delete_avatar = forms.BooleanField(
+        required=False,
+        initial=False,
+        label='Удалить текущую фотографию',
+        help_text='Отметьте, если хотите удалить текущую фотографию'
     )
 
     class Meta:
@@ -105,6 +110,9 @@ class ProfileUpdateForm(forms.ModelForm):
             'birth_date': 'Дата рождения',
             'bio': 'Информация о себе',
             'slug': 'Ссылка на профиль'
+        }
+        widgets = {
+            'avatar': forms.FileInput(attrs={'class': 'form-control'}),
         }
 
 

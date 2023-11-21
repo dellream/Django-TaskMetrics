@@ -66,6 +66,11 @@ class ProfileUpdateView(UpdateView):
         return context
 
     def form_valid(self, form):
+        delete_avatar = form.cleaned_data.get('delete_avatar')
+        if delete_avatar:
+            profile = self.get_object()
+            profile.avatar.delete()
+
         if ServiceProfileUpdate.save_profile_data(self.request, form):
             return super(ProfileUpdateView, self).form_valid(form)
         else:
