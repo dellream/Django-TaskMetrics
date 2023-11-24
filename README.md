@@ -153,8 +153,9 @@ selenium и beautifulsoup
 
 
 <details>
-<summary><b>Для локального запуска: </b></summary>
+<summary><b>Для локального запуска: </b></summary>   
 
+Для запуска проекта локально на своем ПК введите в терминале следующую команду:  
 ```
 python manage.py runserver --settings=config.settings.local
 ```
@@ -165,13 +166,25 @@ export DJANGO_SETTINGS_MODULE=config.settings.local
 ```
 </details>
 
-<details>
+<details>   
 <summary><b>Для запуска с докера: </b></summary>
 
+Для запуска проекта введите команду в терминале:
 ```
 docker compose up
 ```
 
+Если вы сталкиваетесь с проблемой *permission denied*, то вероятно сложность
+заключается в запуске скрипта wait-for-it.sh, выполните команду в соответствующей
+директории и повторите попытку запуска:
+```
+chmod +x wait-for-it.sh
+```
+
+Вы должны увидеть строку:
+```
+app-web-1  | Starting ASGI/Channels version 3.0.5 development server at http://0.0.0.0:8000/
+```
 </details>
 
 ## Контакты
