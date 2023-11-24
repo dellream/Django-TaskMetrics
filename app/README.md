@@ -41,7 +41,7 @@
 <summary><b>Схема БД</b></summary>   
 <a href="https://dbdiagram.io/d/655dc8413be14957877f5cd2">Интерактивная схема базы данных</a>    
 
-![DB](app/media/README_media/database_erd.png)
+![DB](media/README_media/database_erd.png)
 </details>
 
 <details>
@@ -94,7 +94,7 @@ AbstractBaseUser или AbstractUser.
 
 - Использование ASGI:
   - Использования channels (схема цикла запрос/ответа) 
-![DB](app/media/README_media/chat_request-response.png)
+![DB](media/README_media/chat_request-response.png)
   - Для реализации было выполнено:
     - Настройка потребителя (consumers.py)
     - Конфигурация маршрутизации (routing.py)
@@ -150,14 +150,28 @@ selenium и beautifulsoup
 
 Для просмотра структуры проекта: `tree -I 'venv|__pycache__'`
 
-Для локального запуска: 
+
+
+<details>
+<summary><b>Для локального запуска: </b></summary>
+
 ```
 python manage.py runserver --settings=config.settings.local
 ```
+
 Чтобы не вводить флаг `--settings` каждый раз, можно ввести в терминале:
 ```
 export DJANGO_SETTINGS_MODULE=config.settings.local
 ```
+</details>
 
+<details>
+<summary><b>Для запуска с докера: </b></summary>
+
+```
+docker compose up
+```
+
+</details>
 
 ## Контакты
