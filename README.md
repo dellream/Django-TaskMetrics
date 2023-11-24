@@ -111,7 +111,7 @@ AbstractBaseUser или AbstractUser.
 Все логирование от Django по умолчанию перехватывается для одинакового
 форматирования, вывод в консоль при этом сохраняется (отдельный handler для консоли)
 
-```JSON
+```
 'formatters': {
         'standart': {
             'format': '%(asctime)s %(levelname)s %(name)s %(message)s'
@@ -142,7 +142,22 @@ selenium и beautifulsoup
 
 
 ## Установка и запуск
+* Разделены настройки для локальной и производственной сред, файл *base.py*
+является файлом базовых настроек, содержащий общие настроечные параметры 
+(стандартный settings.py)
+* Настройки для локальной среды находятся в local.py
+* Настройки под производственную среду находятся в prod.py
 
 Для просмотра структуры проекта: `tree -I 'venv|__pycache__'`
+
+Для локального запуска: 
+```
+python manage.py runserver --settings=config.settings.local
+```
+Чтобы не вводить флаг `--settings` каждый раз, можно ввести в терминале:
+```
+export DJANGO_SETTINGS_MODULE=config.settings.local
+```
+
 
 ## Контакты

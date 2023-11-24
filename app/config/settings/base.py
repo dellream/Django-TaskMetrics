@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import logging
 from pathlib import Path
-from .conf import (
+from config.conf import (
     DB_HOST,
     DB_PORT,
     DB_NAME,
@@ -24,12 +24,12 @@ from .conf import (
     EMAIL_HOST_PASSWORD,
     EMAIL_PORT, REDIS_HOST, REDIS_PORT
 )
-from .logging_config import LOGGING
+from config.logging_config import LOGGING
 logger = logging.getLogger(__name__)
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -97,16 +97,17 @@ ASGI_APPLICATION = 'config.asgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': DB_NAME,
-        'USER': DB_USER,
-        'PASSWORD': DB_PASSWORD,
-        'HOST': DB_HOST,
-        'PORT': DB_PORT,
-    }
-}
+# Перенесено в файл сред разработки local и prod
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': DB_NAME,
+#         'USER': DB_USER,
+#         'PASSWORD': DB_PASSWORD,
+#         'HOST': DB_HOST,
+#         'PORT': DB_PORT,
+#     }
+# }
 
 
 # Password validation
