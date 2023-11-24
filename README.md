@@ -41,7 +41,7 @@
 <summary><b>Схема БД</b></summary>   
 <a href="https://dbdiagram.io/d/655dc8413be14957877f5cd2">Интерактивная схема базы данных</a>    
 
-![DB](media/README_media/database_erd.png)
+![DB](app/media/README_media/database_erd.png)
 </details>
 
 <details>
@@ -94,7 +94,7 @@ AbstractBaseUser или AbstractUser.
 
 - Использование ASGI:
   - Использования channels (схема цикла запрос/ответа) 
-![DB](media/README_media/chat_request-response.png)
+![DB](app/media/README_media/chat_request-response.png)
   - Для реализации было выполнено:
     - Настройка потребителя (consumers.py)
     - Конфигурация маршрутизации (routing.py)
