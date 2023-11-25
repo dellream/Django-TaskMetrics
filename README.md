@@ -185,6 +185,19 @@ chmod +x wait-for-it.sh
 ```
 app-web-1  | Starting ASGI/Channels version 3.0.5 development server at http://0.0.0.0:8000/
 ```
+
+Применение миграции БД и создание суперпользователя:
+
+С запущенным контейнером выполните следующую команду:
+```
+docker compose exec web python /code/manage.py migrate
+```
+
+Для создания суперпользователя введите команду:
+```
+docker compose exec web python /code/manage.py createsuperuser
+```
+
 </details>
 
 ## Контакты
