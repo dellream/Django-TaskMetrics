@@ -1,0 +1,139 @@
+/* Сообщения */
+ul.messages {
+    margin:10px 100px;
+    padding:0;
+    list-style-type:
+    none;
+}
+ul.messages li.success,
+ul.messages li.warning,
+ul.messages li.error,
+ul.messages li.info {
+    margin:0;
+    padding:14px 20px;
+    list-style:none;
+    color: black;
+}
+
+ul.messages li.success { background:#C0E6C0; }
+ul.messages li.success a { color:#738A73; }
+
+ul.messages li.error { background:#E3B2BE; }
+ul.messages li.error a { color:#886A72; }
+
+ul.messages li.info { background:#FCFFD6; }
+ul.messages li.info a { color:#B0B295; }
+
+ul.messages li.warning { background:#EEC981; }
+ul.messages li.warning a { color:#A68C5A; }
+
+ul.messages li a.close {
+    margin: 0;
+    float: right;
+    opacity: 1;
+    border: 0;
+    box-shadow: none;
+    text-shadow: none;
+    cursor: pointer; /* для указания, что это кликабельный элемент */
+}
+
+
+.login-form {
+    float:left;
+}
+
+/* Социальная аутентификация */
+.social {
+    float:right;
+}
+.social li {
+    list-style:none;
+    padding:10px 20px;
+    margin:0 0 10px 0;
+}
+.social li a {
+    width:100%;
+    height:100%;
+    display:block;
+    color:#fff;
+}
+.social li.vk { background:#3b5399; }
+
+/* ------------------ Профиль пользователя ----------------- */
+
+.profile-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+.card-text {
+    display: flex;
+    justify-content: space-between;
+}
+
+.profile-info {
+    display: flex;
+}
+
+.profile-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.profile-details {
+    list-style-type: none;
+    padding: 0;
+}
+
+.profile-details li {
+    margin-bottom: 10px;
+}
+
+.detail-label {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.profile-actions {
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-profile-link,
+.change-password-link {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background-color: #f7e6cac9;
+    color: black;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.edit-profile-link:hover,
+.change-password-link:hover {
+    background-color: rgba(184, 171, 150, 0.788);
+}
+
+/* ----------- Стилизация редактирования профиля -------------- */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group-avatar {
+    display: flex;
+    flex-direction: column;
+}

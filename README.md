@@ -198,6 +198,11 @@ docker compose exec web python /code/manage.py migrate
 docker compose exec web python /code/manage.py createsuperuser
 ```
 
+Для сбора статики:
+```
+docker compose exec web python /code/manage.py collectstatic
+```
+
 </details>
 
 ## Контакты

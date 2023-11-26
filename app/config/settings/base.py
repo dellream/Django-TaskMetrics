@@ -25,12 +25,11 @@ from config.conf import (
     EMAIL_PORT, REDIS_HOST, REDIS_PORT
 )
 from config.logging_config import LOGGING
-logger = logging.getLogger(__name__)
 
+logger = logging.getLogger(__name__)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -42,7 +41,6 @@ SECRET_KEY = SECRET_KEY_ENV
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -93,7 +91,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 ASGI_APPLICATION = 'config.asgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -128,7 +125,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -139,7 +135,6 @@ TIME_ZONE = 'Europe/Moscow'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -168,10 +163,6 @@ LOGIN_REDIRECT_URL = 'core:home'
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 
-# Работа с медиафайлами
-MEDIA_URL = 'media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-
 # Логирование
 LOGGING_CONFIG = None  # Использование конфигурации логирования из logging_config.py
 
@@ -183,3 +174,11 @@ CHANNEL_LAYERS = {
         }
     }
 }
+
+# Раздача статики
+
+STATIC_ROOT = BASE_DIR / 'static'
+
+# Работа с медиафайлами
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
