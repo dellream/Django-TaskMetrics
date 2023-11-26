@@ -36,7 +36,12 @@
 5. **Развертывание проекта на сервере**: Создание производственной среды, обеспечение защиты с 
 помощью SSL/TLS, использование DockerCompose и раздача Django через NGINX
 
-## Функциональности проекта
+## Функциональности проекта  
+
+Общий вид производственной среды выглядит следующим образом:
+
+![DB](app/media/README_media/prod_req-response.png)
+
 <details>
 <summary><b>Схема БД</b></summary>   
 <a href="https://dbdiagram.io/d/655dc8413be14957877f5cd2">Интерактивная схема базы данных</a>    
@@ -132,15 +137,6 @@ AbstractBaseUser или AbstractUser.
 selenium и beautifulsoup
 
 Фикстуры вынесены в отдельные файлы conftest для улучшения читаемости кода тестов
-
-</details>
-
-<details>
-<summary><b>Развертывание проекта</b></summary>
-
-Общий вид производственной среды выглядит следующим образом:
-
-![DB](app/media/README_media/prod_req-response.png)
 
 </details>
 
