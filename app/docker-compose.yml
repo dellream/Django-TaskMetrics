@@ -33,6 +33,7 @@ services:
       - uwsgi_socket:/tmp
     ports:
       - "8085:8085"
+#      - "443:443"
 
 volumes:
   postgres_data:
