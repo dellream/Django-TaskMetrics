@@ -2,6 +2,11 @@ upstream uwsgi_app {
     server unix:/tmp/uwsgi_app.sock;
 }
 
+
+upstream daphne {
+    server unix:/tmp/daphne.sock;
+}
+
 server {
     listen                  8085;
     server_name             www.taskmetrics.ru taskmetrics.ru;
@@ -20,5 +25,13 @@ server {
 
     location /media/ {
         alias /code/media/;
+    }
+
+    location /ws/ {
+        proxy_http_version  1.1;
+        proxy_set_header    Upgrade $http_upgrade;
+        proxy_set_header    Connection "upgrade";
+        proxy_redirect      off;
+        proxy_pass          http://daphne;
     }
 }

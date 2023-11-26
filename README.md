@@ -138,6 +138,10 @@ selenium и beautifulsoup
 <details>
 <summary><b>Развертывание проекта</b></summary>
 
+Общий вид производственной среды выглядит следующим образом:
+
+![DB](app/media/README_media/prod_req-response.png)
+
 </details>
 
 
@@ -206,3 +210,6 @@ docker compose exec web python /code/manage.py collectstatic
 </details>
 
 ## Контакты
+
+*telegram*: @dellream   
+*e-mail*: yakimov.as@mail.ru
