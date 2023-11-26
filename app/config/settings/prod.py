@@ -10,6 +10,8 @@ ADMINS = [
 
 ALLOWED_HOSTS = ['*']
 
+SECRET_KEY = "django-insecure-o*&rq5s)=ye=i)5s%!5lc-gee@!vu5rc_vf6(zj^ms&#c5un8t"
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
