@@ -11,6 +11,7 @@ import os
 
 from django.core.asgi import get_asgi_application
 from channels.routing import ProtocolTypeRouter, URLRouter
+from channels.security.websocket import AllowedHostsOriginValidator
 from channels.auth import AuthMiddlewareStack
 import chat.routing
 
@@ -24,8 +25,10 @@ django_asgi_app = get_asgi_application()
 application = ProtocolTypeRouter(
     {
         'http': django_asgi_app,  # Для обработки HTTP-запросов используем стандартное ASGI-приложение Django
-        'websocket': AuthMiddlewareStack(  # Для веб-сокетов применяем стек мидлваров для аутентификации
-            URLRouter(chat.routing.websocket_urlpatterns)  # Определяем URL-маршруты для веб-сокетов из chat.routing
-        )
+        'websocket': AllowedHostsOriginValidator(
+            AuthMiddlewareStack(
+                URLRouter(chat.routing.websocket_urlpatterns)
+            )
+        ),
     }
 )

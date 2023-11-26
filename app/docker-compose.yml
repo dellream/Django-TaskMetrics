@@ -1,4 +1,10 @@
 services:
+  cache:
+    image: redis:7.0.4
+    restart: always
+    volumes:
+      - redis_data:/data
+
   db:
     image: postgres:14.9
     restart: always
@@ -16,6 +22,7 @@ services:
     volumes:
       - .:/code
       - uwsgi_socket:/tmp
+      - daphne_socket:/tmp
     environment:
       - DJANGO_SETTINGS_MODULE=config.settings.prod
       - POSTGRES_DB=postgres
@@ -23,6 +30,25 @@ services:
       - POSTGRES_PASSWORD=postgres
     depends_on:
       - db
+      - redis
+
+  daphne:
+    build: .
+    command: ["./wait-for-it.sh", "db:5432", "--",
+              "daphne", "-u", "/tmp/daphne.sock",
+              "config.asgi:application"]
+    restart: always
+    volumes:
+      - daphne_socket:/tmp
+      - .:/code
+    environment:
+      - DJANGO_SETTINGS_MODULE=config.settings.prod
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    depends_on:
+      - db
+      - redis
 
   nginx:
     image: nginx:1.23.1
@@ -31,10 +57,13 @@ services:
       - ./config/nginx:/etc/nginx/templates
       - .:/code
       - uwsgi_socket:/tmp
+      - daphne_socket:/tmp
     ports:
       - "8085:8085"
 #      - "443:443"
 
 volumes:
+  redis_data:
   postgres_data:
   uwsgi_socket:
+  daphne_socket:
